@@ -18,26 +18,56 @@ export class LoginPageComponent implements OnInit {
   title = 'Nangular Chat - Login';
   email = '';
   password = '';
+  storageEnabled = false;
   userAccount = {username: this.email, password: this.password};
 
   constructor(private router: Router, private httpClient: HttpClient, private JsonDataManagementService: JsonDataManagementService){ }
 
   ngOnInit() { //DOM is Ready > action
 
-    //Tests both local Storage and sessionStorage is available. Some older browsers may not support these methods.
+    //sessionStorage.setItem("username", 'Isaac')
+    //testing session storage redirect
+
+    //Check if already logged in
+    if(sessionStorage.getItem("username") != null) {
+      alert("You are already logged in, redirecting you...");
+      this.router.navigateByUrl('/profile');
+    }
+
+    //Tests storage for validity
     if (typeof(Storage) !== "undefined"){
-      console.log('Session Storage Ready');
+      this.storageEnabled = true;
     } else {
-      console.log('No Session Storage Support');
+      this.storageEnabled = false;
     }
 
     //Debug
+    console.log('Session Storage enabled: ' + this.storageEnabled);
     console.log(sessionStorage);
     console.log(localStorage);
   }
 
-  setItem() {
-    this.JsonDataManagementService.setItem(this.email, this.password);
-    console.log(this.JsonDataManagementService.jsonItems);
+  logInUser() {
+    //super@test.com
+    if (this.email == "super@test.com"){
+      if(this.password == "test"){
+        this.router.navigateByUrl("/profile");
+      }
+    }
+
+    //admin@test.com
+    else if (this.email == "admin@test.com"){
+      if(this.password == "test"){
+        this.router.navigateByUrl("/profile");
+      }
+    }
+
+    //user@test.com
+    else if (this.email == "user@test.com"){
+      if(this.password == "test"){
+        this.router.navigateByUrl("/profile");
+      }
+    }
+    else{ window.alert("Username or password is not valid!"); }
   }
 }

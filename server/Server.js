@@ -34,7 +34,6 @@ app.use(express.static(path.join(__dirname + '/../dist/nangular-chat'))); //Serv
 console.log(__dirname);
 
 // JSON Serialisation
-const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 

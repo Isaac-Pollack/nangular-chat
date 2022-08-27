@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { AdminPanelComponent } from './admin-panel/admin-panel.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { AdminPanelComponent } from './admin-panel/admin-panel.component';
     //My imports
     LoginPageComponent,
     ProfilePageComponent,
-    AdminPanelComponent
+    AdminPanelComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
