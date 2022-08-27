@@ -1,0 +1,24 @@
+{
+  "usersarray": [{
+      "userid": 1,
+      "username": "super",
+      "role": "Super Admin",
+      "email": "isaac@gmail.com",
+      "password": "test"
+    },
+    {
+      "userid": 2,
+      "username": "group",
+      "role": "Group Admin",
+      "email": "jane@com.au",
+      "password": "test"
+    }, 
+    {
+      "userid": 3,
+      "username": "assist",
+      "role": "Group Assis",
+      "email": "john@gmail.com",
+      "password": "test"
+    }
+  ]
+}

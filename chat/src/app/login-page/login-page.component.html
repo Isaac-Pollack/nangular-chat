@@ -1,0 +1,40 @@
+<body class="text-center">
+  <div class="container login-container">
+    <div class="row">
+        <div class="col-md-6 login-form">
+            <h3>Sign In</h3>
+            <form>
+                <div class="form-group">
+                  <label for="inputEmail" class="sr-only">Email address</label>
+                  <input type="email" [(ngModel)]="email" [ngModelOptions]="{standalone: true}" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+                </div>
+                <div class="form-group">
+                  <label for="inputPassword" class="sr-only">Password</label>
+                  <input type="password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" id="inputPassword" class="form-control" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                  <button class="btn btn-lg btn-primary btn-block" (click)="setItem()" id="login">Submit</button>
+                </div>
+                <div class="form-group">
+                    <a href="#" class="ForgetPwd">Forget Password?</a>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6 registration-form">
+            <h3>Registration</h3>
+            <form>
+                <div class="form-group">
+                  <label for="inputEmail" class="sr-only">Email address</label>
+                  <input type="email" [(ngModel)]="email" [ngModelOptions]="{standalone: true}" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+                </div>
+                <div class="form-group">
+                  <label for="inputPassword" class="sr-only">Password</label>
+                  <input type="password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" id="inputPassword" class="form-control" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                  <button class="btn btn-lg btn-primary btn-block" (click)="setItem()" id="login">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
