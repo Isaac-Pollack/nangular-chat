@@ -14,7 +14,11 @@ const io = require('socket.io')(http, {
 });
 const sockets = require('./Socket.js');
 const server = require('./Listen.js');
-//const request = require('request');
+const fs = require('fs'); //Filesystem interaction
+const useraccounts = require('./users.json');
+
+// Markdown Parsing
+const { marked } = require('marked'); //Marked.js
 
 //Define port used for the server
 const PORT = 3000;
@@ -39,6 +43,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 //REST API Endpoints
+app.get('/api', function(req, res) { // Render README.md at base as it contains lots of useful info, helpful!
+  var readme = '../README.md';
+  var output = fs.readFileSync(readme, 'utf8');
+  res.send(marked(output.toString()));
+});
+
+app.get('/api/users', function(req, res) { //View Users.json
+  res.send(useraccounts)
+});
+
 app.post('/api/login', function(req, res) { // Check user credentials and return validity.
   if (!req.body) {
     return res.sendStatus(400)

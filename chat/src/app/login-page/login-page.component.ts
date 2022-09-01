@@ -26,7 +26,7 @@ export class LoginPageComponent implements OnInit {
 
   ngOnInit() {
     //Check if already logged in
-    if (sessionStorage.getItem('username') != null) {
+    if (sessionStorage.length > 0) {
       alert('You are already logged in, redirecting you...');
       this.router.navigateByUrl('/profile');
     }
@@ -34,14 +34,14 @@ export class LoginPageComponent implements OnInit {
     //Tests storage for validity
     if (typeof Storage !== 'undefined') {
       this.storageEnabled = true;
+      console.log('Session Storage enabled: ' + this.storageEnabled);
+      console.log(sessionStorage);
     } else {
       this.storageEnabled = false;
+      console.log('Session Storage enabled: ' + this.storageEnabled);
     }
 
     //Debug
-    console.log('Session Storage enabled: ' + this.storageEnabled);
-    console.log('Session Storage:');
-    console.log(sessionStorage);
     console.log('Local Storage:');
     console.log(localStorage);
   }
