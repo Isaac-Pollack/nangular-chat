@@ -20,8 +20,9 @@ const server = require('./Listen.js');
 const PORT = 3000;
 
 //Apply the middleware
-app.use(cors()); //Help with connections from localhost:3000 > localhost:4200
-app.use (bodyParser.json()); //Parse JSON data
+app.use(cors()); //Cross origin requests -  from localhost:3000 > localhost:4200
+app.use(express.urlencoded({extended:true})); //
+app.use(express.json());
 
 //Setup Socket
 sockets.connect(io, PORT);
@@ -31,14 +32,29 @@ server.listen(http, PORT);
 
 // Point static path to dist if you want to use your own server to serve Angular webpages
 app.use(express.static(path.join(__dirname + '/../dist/nangular-chat'))); //Serve static content from the 'public'
-console.log(__dirname);
+console.log('Static directory is: ' + __dirname);
 
 // JSON Serialisation
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-//API Endpoints
-//app.get('/api/auth', signIn);
+//REST API Endpoints
+app.post('/api/login', function(req, res) { // Check user credentials and return validity.
+  if (!req.body) {
+    return res.sendStatus(400)
+  }
+
+  var user = {}
+  user.email = req.body.email;
+  user.pwd = req.body.pwd;
+
+  if (!req.body.email == "super@test.com" && req.body.pwd == "test") {
+    user.valid = true;
+  } else {
+    user.valid = false;
+  }
+  res.send(user);
+});
 
 //Export REST API
 module.exports = app;

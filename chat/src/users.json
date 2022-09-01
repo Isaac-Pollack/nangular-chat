@@ -1,0 +1,25 @@
+{
+  "Users":[
+    {
+      "UserName": "super",
+      "Email": "super@test.com",
+      "ID": 1,
+      "Role": "SuperAdmin",
+      "Password": "test"
+    },
+    {
+      "UserName": "group",
+      "Email": "group@test.com",
+      "ID": 2,
+      "Role": "GroupAdmin",
+      "Password": "test"
+    },
+    {
+      "UserName": "groupassist",
+      "Email": "ga@test.com",
+      "ID": 3,
+      "Role": "GroupAssis",
+      "Password": "test"
+    }
+  ]
+}
