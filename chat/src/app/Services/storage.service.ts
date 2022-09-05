@@ -1,12 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-
-export interface User {
-  username: String;
-  role: String;
-  valid: boolean;
-}
+import { Observable, retry } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +8,8 @@ export interface User {
 export class StorageService {
   BACKEND_URL = 'http://localhost:3000';
   jsonItems = {};
+  username: String = '';
+  password: String = '';
 
   constructor(private http: HttpClient) {}
 
@@ -25,12 +21,5 @@ export class StorageService {
 
   getItem(key) {
     return this.jsonItems[key];
-  }
-
-  login(inputUsername: string, inputPassword: string) {
-    return this.http.post<User>(this.BACKEND_URL + '/api/login', {
-      inputUsername,
-      inputPassword,
-    });
   }
 }

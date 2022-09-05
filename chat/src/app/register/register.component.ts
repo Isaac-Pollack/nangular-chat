@@ -12,7 +12,6 @@ const httpOptions = {
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
-  title: string = 'Nangular Chat - Register';
   email: string = '';
   password: string = '';
 

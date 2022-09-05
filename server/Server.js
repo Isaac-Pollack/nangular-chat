@@ -1,11 +1,17 @@
 const express = require('express'); //Import express.js
 const app = express(); //Create the express application
-
-// Cross origin resource sharing to cater for port 4200 to port 3000
-const cors = require('cors');
 const http = require("http").Server(app);
 const path = require('path'); //Helps generating links to correct directory
-const bodyParser = require('body-parser'); // Create an instance of nody-parser
+const cors = require('cors');
+const bodyParser = require('body-parser'); // Create an instance of body-parser
+const server = require('./Listen.js');
+const fs = require('fs'); //Filesystem interaction
+
+//Other Imports
+const useraccounts = require('./routes/users.json');
+const { marked } = require('marked'); //Markdown Parsing
+
+//Sockets.io - UNUSED AT THIS POINT
 const io = require('socket.io')(http, {
   cors: {
     origin: "http://localhost:4200",
@@ -13,12 +19,6 @@ const io = require('socket.io')(http, {
   }
 });
 const sockets = require('./Socket.js');
-const server = require('./Listen.js');
-const fs = require('fs'); //Filesystem interaction
-const useraccounts = require('./users.json');
-
-// Markdown Parsing
-const { marked } = require('marked'); //Marked.js
 
 //Define port used for the server
 const PORT = 3000;
@@ -28,19 +28,15 @@ app.use(cors()); //Cross origin requests -  from localhost:3000 > localhost:4200
 app.use(express.urlencoded({extended:true})); //
 app.use(express.json());
 
+// Point static path to dist if you want to use your own server to serve Angular webpages
+app.use(express.static(path.join(__dirname + '/public'))); //Serve static content from the 'public'
+console.log('Static directory is: ' + __dirname);
+
 //Setup Socket
 sockets.connect(io, PORT);
 
 //Start server listening for requests.
 server.listen(http, PORT);
-
-// Point static path to dist if you want to use your own server to serve Angular webpages
-app.use(express.static(path.join(__dirname + '/../dist/nangular-chat'))); //Serve static content from the 'public'
-console.log('Static directory is: ' + __dirname);
-
-// JSON Serialisation
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 
 //REST API Endpoints
 app.get('/api', function(req, res) { // Render README.md at base as it contains lots of useful info, helpful!
@@ -53,21 +49,41 @@ app.get('/api/users', function(req, res) { //View Users.json
   res.send(useraccounts)
 });
 
-app.post('/api/login', function(req, res) { // Check user credentials and return validity.
-  if (!req.body) {
-    return res.sendStatus(400)
+app.post('/api/login', (req, res) => { // Check user credentials and return validity.
+  console.log("Recieved Login request")
+  fullMatch = false;
+
+  if(!req.body){
+    return res.sendStatus(400);
   }
 
-  var user = {}
-  user.email = req.body.email;
-  user.pwd = req.body.pwd;
+  userEmail = req.body.email;
+  userPassword = req.body.password
 
-  if (!req.body.email == "super@test.com" && req.body.pwd == "test") {
-    user.valid = true;
-  } else {
-    user.valid = false;
+  console.log('REQUEST EMAIL: ' + userEmail)
+  console.log('REQUEST PASSWORD: ' + userPassword);
+
+  var userCredentials = useraccounts.Users.find(el => el.email == userEmail); // Return first object with email that matches userEmail
+
+  console.log(userCredentials);
+
+  if (userCredentials != null) {
+    console.log('FOUND EMAIL');
+    console.log(userCredentials.email);
+    console.log(userCredentials.password);
+    
+    if (userPassword == userCredentials.password) {
+      console.log('PASSWORD MATCH');
+      fullMatch = true;
+    } else {
+      console.log('PASSWORD DOES NOT MATCH');
+    }
+
   }
-  res.send(user);
+
+  //Send back response to the check
+  res.send(fullMatch);
+
 });
 
 //Export REST API

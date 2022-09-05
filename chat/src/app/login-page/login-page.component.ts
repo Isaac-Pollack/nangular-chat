@@ -13,20 +13,21 @@ const httpOptions = {
   styleUrls: ['./login-page.component.css'],
 })
 export class LoginPageComponent implements OnInit {
-  title: string = 'Nangular Chat - Login';
-  email: string = '';
-  password: string = '';
+  BACKEND_URL = 'http://localhost:3000';
   storageEnabled: boolean = false;
+  email: string = '';
+  password: String = '';
+  role: string = '';
 
   constructor(
     private router: Router,
-    private httpClient: HttpClient,
+    private http: HttpClient,
     public StorageService: StorageService
   ) {}
 
   ngOnInit() {
     //Check if already logged in
-    if (sessionStorage.length > 0) {
+    if (sessionStorage.getItem('username') != null) {
       alert('You are already logged in, redirecting you...');
       this.router.navigateByUrl('/profile');
     }
@@ -47,7 +48,15 @@ export class LoginPageComponent implements OnInit {
   }
 
   logInUser() {
-    //Check Username & Password
-    console.log('LOGINUSER INITIATED');
+    // Logs user to sessionStorage, ensures all fields are error-free & routes to /chat.
+    console.log('Attempting to login...');
+    this.http
+      .post<any>(this.BACKEND_URL + '/api/login', {
+        email: this.email,
+        password: this.password,
+      })
+      .subscribe((data) => {
+        console.log(data);
+      });
   }
 }
