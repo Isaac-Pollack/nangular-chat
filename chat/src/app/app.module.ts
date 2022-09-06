@@ -11,6 +11,7 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 import { RegisterComponent } from './register/register.component';
+import { ChatPageComponent } from './chat-page/chat-page.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { RegisterComponent } from './register/register.component';
     LoginPageComponent,
     ProfilePageComponent,
     AdminPanelComponent,
-    RegisterComponent
+    RegisterComponent,
+    ChatPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -27,9 +29,9 @@ import { RegisterComponent } from './register/register.component';
     AppRoutingModule,
     //My imports
     FormsModule,
-    CommonModule
+    CommonModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,3 +1,67 @@
 <h1>{{title}}</h1>
 
 <router-outlet></router-outlet>
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" /> <!-- Icons -->
+
+<div class="container">
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title text-uppercase mb-0">Manage Users</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table no-wrap user-table mb-0">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="border-0 text-uppercase font-medium pl-4">USER ID</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium">Username</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium">Email</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium">Channels</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium">Role</th>
+                      <th scope="col" class="border-0 text-uppercase font-medium">Manage</th>
+                    </tr>
+                  </thead>
+
+                  <div>
+                  <!-- BEGINNING OF ngFor -->
+                  <tbody>
+                    <tr>
+                      <td class="pl-4">1</td>
+                      <td>
+                          <h5 class="font-medium mb-0">super</h5>
+                      </td>
+                      <td>
+                          <span class="text-muted">super@test.com</span><br>
+                      </td>
+                      <td>
+                        <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                          <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
+                          <label class="btn btn-outline-primary" for="btncheck1">Channel 1</label>
+
+                          <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
+                          <label class="btn btn-outline-primary" for="btncheck2">Channel 2</label>
+                        </div>
+                      </td>
+                      <td>
+                        <select class="form-control category-select" id="roleSelect">
+                          <option>Super Admin</option>
+                          <option>Group Admin</option>
+                          <option>Group Assis</option>
+                        </select>
+                      </td>
+                      <td>
+                        <button type="button" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-trash"></i> </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                  </div>
+
+                  <!-- END OF ngFor -->
+                </table>
+            </div>
+        </div>
+    </div>
+  </div>
+

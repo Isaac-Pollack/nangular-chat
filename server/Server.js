@@ -98,5 +98,15 @@ app.post('/api/profile', (req, res) => { // Check user credentials and return va
   res.send(userCredentials);
 });
 
+app.post('/api/admin', (req, res) => { // Check user credentials and return validity.
+  //Error Checking
+  if(!req.body){
+    return res.sendStatus(400);
+    console.log("Recieved Invalid Request: Error 400")
+  }
+
+  //Check if role matches allowed admin type, allowed roles are: Super Admin, 
+});
+
 //Export REST API
 module.exports = app;

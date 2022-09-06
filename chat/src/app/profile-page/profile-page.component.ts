@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { StorageService } from '../Services/storage.service';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'app-profile-page',
@@ -51,6 +52,12 @@ export class ProfilePageComponent implements OnInit {
           localStorage.setItem('userid', data.userid);
         });
     }
+  }
+
+  logOut() {
+    sessionStorage.clear();
+    localStorage.clear();
+    this.router.navigateByUrl('/login');
   }
 }
 
