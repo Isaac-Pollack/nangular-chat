@@ -91,9 +91,6 @@ app.post('/api/profile', (req, res) => { // Check user credentials and return va
   var userCredentials = useraccounts.Users.find(el => el.email == userEmail); // Return first object with email that matches our req.body email
   console.log(userCredentials);
 
-  //We don't want to send back the password
-  //delete userCredentials.password;
-
   //Send back response to the login function
   res.send(userCredentials);
 });
@@ -105,8 +102,46 @@ app.post('/api/admin', (req, res) => { // Check user credentials and return vali
     console.log("Recieved Invalid Request: Error 400")
   }
 
-  //Check if role matches allowed admin type, allowed roles are: Super Admin, 
+  //Check if role matches allowed admin type, allowed roles are: ... TBD
 });
+
+app.post('/api/register', (req, res) => { // Register User to json file/localstorage
+  var emailExists = false;
+
+  //Error Checking
+  if(!req.body){
+    return res.sendStatus(400);
+    console.log("Recieved Invalid Request: Error 400")
+  }
+
+  registerEmail = req.body.email;
+  registerPassword = req.body.password
+  console.log("Recieved Register request for: " + registerEmail)
+  console.log("Password: " + registerPassword);
+
+  var userCredentials = useraccounts.Users.find(el => el.email == registerEmail); // Return first object with email that matches our req.body email
+
+  var lastUserID = useraccounts.Users[useraccounts.Users.length-1].userid // Grab the last value for userid in our JSON file, so we can increment on it
+
+  let newUserCredentials = {
+    "userid": lastUserID + 1,
+    "username": registerEmail,
+    "role": "Default",
+    "email": registerEmail,
+    "password": registerPassword
+  }
+
+  if (userCredentials != null) {
+    console.log('FOUND EMAIL MATCH, ALERTING USER');
+    emailExists = true;
+  } else {
+      console.log('Registered ' + registerEmail + ' successfully!');}
+
+      //TODO WRITE TO JSON
+
+    //Send back response to the login function
+    res.send(emailExists);
+  });
 
 //Export REST API
 module.exports = app;

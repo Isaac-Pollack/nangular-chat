@@ -109,11 +109,7 @@ input{
   border: 2px solid rgb(149, 149, 149)
 }
 
-#email, div.row:nth-child(1) > div:nth-child(2) > label:nth-child(1) {
-  margin-left: 10px;
-}
-
-#language, #lang > label:nth-child(1) {
+#email, div.row:nth-child(1) > div:nth-child(2) > label:nth-child(1), div.row:nth-child(2) > div:nth-child(2) > fieldset:nth-child(1) > input:nth-child(2), #language, #lang > label:nth-child(1), div.row:nth-child(2) > div:nth-child(2) > fieldset:nth-child(1) > label:nth-child(1) {
   margin-left: 10px;
 }
 

@@ -58,7 +58,6 @@ export class LoginPageComponent implements OnInit {
       .subscribe((data) => {
         if (data == true) {
           console.log('Login Successful');
-          let loggedIn = true;
           localStorage.setItem('username', this.email);
           this.router.navigateByUrl('/profile');
         } else {

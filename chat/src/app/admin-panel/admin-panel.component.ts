@@ -18,10 +18,10 @@ export class AdminPanelComponent implements OnInit {
     public StorageService: StorageService
   ) {}
 
-  async ngOnInit() {
+  ngOnInit() {
     //Check if already logged in
     if (localStorage.getItem('username') == null) {
-      alert('You are not already logged in, redirecting you...');
+      alert('You are not logged in, redirecting you...');
       this.router.navigateByUrl('/login');
     }
 

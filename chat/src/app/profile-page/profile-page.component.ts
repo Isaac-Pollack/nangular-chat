@@ -15,6 +15,7 @@ export class ProfilePageComponent implements OnInit {
   Username = capitalizeFirstLetter(localStorage.getItem('username'));
   Role = localStorage.getItem('role');
   Email = localStorage.getItem('email');
+  UserID = localStorage.getItem('userid');
 
   constructor(
     private router: Router,
@@ -50,6 +51,7 @@ export class ProfilePageComponent implements OnInit {
           localStorage.setItem('role', data.role);
           localStorage.setItem('username', data.username);
           localStorage.setItem('userid', data.userid);
+          location.reload();
         });
     }
   }

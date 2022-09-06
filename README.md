@@ -43,49 +43,54 @@ This project utilises Git and is hosted on Github, as these provide flexible and
 s
 ## Architecture
 ### Components
-<b>Login: </b>This page <br>
-<b>Register: </b>This page <br>
-<b>Profile: </b>This page <br>
-<b>Admin: </b>This page
+<b>login-page: </b>Our entry point!<br>
+<b>register: </b>This page allows us to register to the local storage, and login using that.<br>
+<b>profile-page: </b>This page will show our stored information for our account, with an option for a profile picture.<br>
+<b>admin-panel: </b>This page is where the user with sufficient permissions will manage others roles and create/delete channels.
+<b>chat-page: </b>This is our main chat page, where you will enter/create channels and messages will appear.
 ### Services
-<b>Storage: </b>This service <br>
+<b>Storage: </b>This service homes our getItem and setItem for our browser storages.<br>
 ### Routes
-'/' - The landing page, just aesthetic, with nav.
-'/login - Log in page
-'/profile - Greeting profile page, retrieves current session storage and displays username, email and admin priveledges (group assignments)
-'/admin - Those with admin accesss are given the ability to create new users, groups and channels in mongoDB.
-'**' - 404, page not found. This is our catch, and it redirects us back to the home page.
+' / ' - Redirects to /login to initialise session data checks<br>
+' /login '<br>
+' /profile '<br>
+' /admin '<br>
+' /chat '<br>
+' ** ' - 404, page not found. This is our catch, and it redirects us back to the home page.
 
 ### Node / Server
 {{THIS IS UNTRUE FOR PART 1, SIMPLY LOCAL STORAGE}}
 - The Node.js server storage utilizes a MongoDB database. The mongo database stores all of the user, group, and channel data as well as chat history.
 
-### REST API
+### API
 | Route  | Description |
 | ------------- | ------------- |
 | [/](http://localhost:3000/api) | Displays the repo's README.md file rendered as HTML using [Marked.js](https://www.npmjs.com/package/marked). |
 | [/api/users](http://localhost:3000/api/users) | Displays all the users within the users.json file. // Converted to MongoDB in Pt2 // |
 | [/api/login](http://localhost:3000/api/login) | Tests validity of the input email + password from our login component against our JSON file, returning a True/False boolean for use in our login component. |
-[/api/EXAMPLE](http://localhost:3000/api/EXAMPLE) | MORE ROUTES TO COME |
+[/api/profile](http://localhost:3000/api/profile) | Requests the entire user data for the email that is currently logged in to populate the page |
+[/api/admin](http://localhost:3000/api/admin) | Checks the user has sufficient permissions, then allows them to manage others roles and create/delete channels |
+[/api/register](http://localhost:3000/api/register) | Tests whether the email entered in the request exists already, if not creates it within session storage and assigns dummy data to the other profile slots |
 ## Application Interactions
-• Describe the details of the interaction between client and server by indicating how the files and global vars in server side will be changed and how the display of each angular component page will be updated.
+I tried to mostly contain user data and relevant checking to the server side of the application (Server.js), with the client just reaching for the relevant information to consume. I believed on initial design this would be powerful provided proper caching abilities, however now that the application has become larger I believe the correct way to go about this would have been to abstract the api endpoint logic into seperate source files, and the frontend even more removed into relevant services. 
 
-A description of how you divided the responsibilities between client and server (you are encouraged to have the server provide a REST API which returns JSON in addition to a static directory)
+These are aspects that I had only discovered upon implementing it the way that I did. This would stop things such as having to specify my BACKEND_URL every component, and hiding sensitive data from the frontend a little more, albeit not being secure in the first place. The focus was as much as possible, rather than total disregard, however.
 
-## Development server
+## Angular - (Client) Specific
+### Development server
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Code scaffolding
+### Code scaffolding
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
+### Build
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Running unit tests
+### Running unit tests
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
+### Running end-to-end tests
 Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
-## Further help
+### Further help
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
