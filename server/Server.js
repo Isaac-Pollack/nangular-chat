@@ -50,40 +50,52 @@ app.get('/api/users', function(req, res) { //View Users.json
 });
 
 app.post('/api/login', (req, res) => { // Check user credentials and return validity.
-  console.log("Recieved Login request")
   fullMatch = false;
 
+  //Error Checking
   if(!req.body){
     return res.sendStatus(400);
+    console.log("Recieved Invalid Request: Error 400")
   }
 
   userEmail = req.body.email;
   userPassword = req.body.password
+  console.log("Recieved Login request for: " + userEmail)
+  console.log("Password: " + userPassword);
 
-  console.log('REQUEST EMAIL: ' + userEmail)
-  console.log('REQUEST PASSWORD: ' + userPassword);
-
-  var userCredentials = useraccounts.Users.find(el => el.email == userEmail); // Return first object with email that matches userEmail
-
-  console.log(userCredentials);
+  var userCredentials = useraccounts.Users.find(el => el.email == userEmail); // Return first object with email that matches our req.body email
 
   if (userCredentials != null) {
     console.log('FOUND EMAIL');
-    console.log(userCredentials.email);
-    console.log(userCredentials.password);
-    
     if (userPassword == userCredentials.password) {
       console.log('PASSWORD MATCH');
       fullMatch = true;
     } else {
       console.log('PASSWORD DOES NOT MATCH');
     }
-
   }
 
-  //Send back response to the check
+  //Send back response to the login function
   res.send(fullMatch);
+});
 
+app.post('/api/profile', (req, res) => { // Check user credentials and return validity.
+  //Error Checking
+  if(!req.body){
+    return res.sendStatus(400);
+    console.log("Recieved Invalid Request: Error 400")
+  }
+
+  userEmail = req.body.email;
+  console.log('PROFILE DETAILS REQUESTED FOR: ' + userEmail);
+  var userCredentials = useraccounts.Users.find(el => el.email == userEmail); // Return first object with email that matches our req.body email
+  console.log(userCredentials);
+
+  //We don't want to send back the password
+  //delete userCredentials.password;
+
+  //Send back response to the login function
+  res.send(userCredentials);
 });
 
 //Export REST API

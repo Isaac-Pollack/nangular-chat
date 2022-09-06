@@ -8,8 +8,6 @@ import { Observable, retry } from 'rxjs';
 export class StorageService {
   BACKEND_URL = 'http://localhost:3000';
   jsonItems = {};
-  username: String = '';
-  password: String = '';
 
   constructor(private http: HttpClient) {}
 

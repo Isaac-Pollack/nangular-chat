@@ -21,7 +21,12 @@ export class RegisterComponent implements OnInit {
     private StorageService: StorageService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit() {
+    if (localStorage.getItem('username') != null) {
+      alert('You are already registered, redirecting you...');
+      this.router.navigateByUrl('/profile');
+    }
+  }
 
   registerUser() {
     //Register username as key, password as item

@@ -27,7 +27,7 @@ export class LoginPageComponent implements OnInit {
 
   ngOnInit() {
     //Check if already logged in
-    if (sessionStorage.getItem('username') != null) {
+    if (localStorage.getItem('username') != null) {
       alert('You are already logged in, redirecting you...');
       this.router.navigateByUrl('/profile');
     }
@@ -48,7 +48,7 @@ export class LoginPageComponent implements OnInit {
   }
 
   logInUser() {
-    // Logs user to sessionStorage, ensures all fields are error-free & routes to /chat.
+    // Logs user to localstorage, ensures all fields are error-free & routes to /chat.
     console.log('Attempting to login...');
     this.http
       .post<any>(this.BACKEND_URL + '/api/login', {
@@ -56,7 +56,14 @@ export class LoginPageComponent implements OnInit {
         password: this.password,
       })
       .subscribe((data) => {
-        console.log(data);
+        if (data == true) {
+          console.log('Login Successful');
+          let loggedIn = true;
+          localStorage.setItem('username', this.email);
+          this.router.navigateByUrl('/profile');
+        } else {
+          console.log('Login Unsuccessful');
+        }
       });
   }
 }
