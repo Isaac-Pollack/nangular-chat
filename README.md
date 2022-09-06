@@ -40,7 +40,18 @@ Allowing the frontend to be accessed via [localhost:4200](localhost:4200)
 This project utilises Git and is hosted on Github, as these provide flexible and free version control across multiple devices which is a big positive for me, moving between. I am able to go at my own pace with development and merge as I see fit, with the option of collaboration later down the line with little to no change. I mainly use the repo solely for backup purposes as my local copies contain any changes, but committing often is something I strive to do.
 
 ## Data Structures
-s
+All data will be stored as objects, written as JSON. We will follow a simple notation such as below;<br>
+
+{<br>
+  "userid": 1,<br>
+  "username": "group",<br>
+  "role": "Group Admin",<br>
+  "email": "group@test.com",<br>
+  "password": "test1"<br>
+}<br>
+
+In actual practice we would not store password plain text at all, however this is just for learning.<br>
+These structures are moved around and checked/tested against as needed.
 ## Architecture
 ### Components
 <b>login-page: </b>Our entry point!<br>
@@ -72,6 +83,8 @@ s
 [/api/admin](http://localhost:3000/api/admin) | Checks the user has sufficient permissions, then allows them to manage others roles and create/delete channels |
 [/api/register](http://localhost:3000/api/register) | Tests whether the email entered in the request exists already, if not creates it within session storage and assigns dummy data to the other profile slots |
 ## Application Interactions
+The client communicates to the server every time the page is loaded or the component is refreshed, and every page is tied to a request, to ensure session status.
+
 I tried to mostly contain user data and relevant checking to the server side of the application (Server.js), with the client just reaching for the relevant information to consume. I believed on initial design this would be powerful provided proper caching abilities, however now that the application has become larger I believe the correct way to go about this would have been to abstract the api endpoint logic into seperate source files, and the frontend even more removed into relevant services. 
 
 These are aspects that I had only discovered upon implementing it the way that I did. This would stop things such as having to specify my BACKEND_URL every component, and hiding sensitive data from the frontend a little more, albeit not being secure in the first place. The focus was as much as possible, rather than total disregard, however.
