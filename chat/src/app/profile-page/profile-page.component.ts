@@ -12,10 +12,22 @@ import { from } from 'rxjs';
 export class ProfilePageComponent implements OnInit {
   title = 'Profile';
   BACKEND_URL = 'http://localhost:3000';
-  Username = capitalizeFirstLetter(localStorage.getItem('username'));
-  Role = localStorage.getItem('role');
+
+  //Profile Info
+  Username = this.capitalizeFirstLetter(localStorage.getItem('username'));
   Email = localStorage.getItem('email');
-  UserID = localStorage.getItem('userid');
+  Role = localStorage.getItem('role');
+  Password = localStorage.getItem('password');
+  Age = localStorage.getItem('age');
+
+  //Our edit form data
+  save = {
+    username: null,
+    email: null,
+    role: localStorage.getItem('role'), //Not making this editable from own profile page
+    password: null,
+    age: null,
+  };
 
   constructor(
     private router: Router,
@@ -28,31 +40,6 @@ export class ProfilePageComponent implements OnInit {
     if (localStorage.getItem('username') == null) {
       alert('You are not logged in, redirecting you...');
       this.router.navigateByUrl('/login');
-    } else {
-      this.fetchProfile();
-    }
-  }
-
-  fetchProfile() {
-    console.log('Fetching Profile...');
-
-    let profileEmail = localStorage.getItem('username');
-    console.log('Logged in as: ' + profileEmail);
-
-    //Request profile info if not already filled.
-    if (localStorage.getItem('role') == null) {
-      this.http
-        .post<any>(this.BACKEND_URL + '/api/profile', {
-          email: profileEmail,
-        })
-        .subscribe((data) => {
-          console.log(data);
-          localStorage.setItem('email', data.email);
-          localStorage.setItem('role', data.role);
-          localStorage.setItem('username', data.username);
-          localStorage.setItem('userid', data.userid);
-          location.reload();
-        });
     }
   }
 
@@ -61,8 +48,43 @@ export class ProfilePageComponent implements OnInit {
     localStorage.clear();
     this.router.navigateByUrl('/login');
   }
-}
 
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  }
+
+  saveChanges() {
+    console.log('Changes Saved');
+    const { email, role, age, username, password } = this.save;
+
+    if (
+      email != null &&
+      role != null &&
+      age != null &&
+      username != null &&
+      password != null
+    ) {
+      this.http
+        .post(this.BACKEND_URL + '/api/login-after', {
+          email: email,
+          role: role,
+          age: age,
+          username: username,
+          password: password,
+        })
+        .subscribe((data: any) => {
+          if (data.ok == true) {
+            alert('Information has been updated!');
+            localStorage.setItem('username', username);
+            localStorage.setItem('email', email);
+            localStorage.setItem('role', role);
+            localStorage.setItem('password', password);
+            localStorage.setItem('age', age);
+          } else if (data.ok == false) {
+            alert('Information has been registered as a new user.');
+            window.location.reload();
+          }
+        });
+    }
+  }
 }

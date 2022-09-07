@@ -57,9 +57,13 @@ export class LoginPageComponent implements OnInit {
         password: this.password,
       })
       .subscribe((data) => {
-        if (data == true) {
+        if (data.fullMatch == true) {
           console.log('Login Successful');
-          localStorage.setItem('username', this.email);
+          localStorage.setItem('username', data.username);
+          localStorage.setItem('email', data.email);
+          localStorage.setItem('role', data.role);
+          localStorage.setItem('password', data.password);
+          localStorage.setItem('age', data.age);
           this.router.navigateByUrl('/profile');
         } else {
           console.log('Login Unsuccessful');

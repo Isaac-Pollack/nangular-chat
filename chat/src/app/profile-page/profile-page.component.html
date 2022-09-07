@@ -16,41 +16,42 @@
   <div class="py-2">
       <div class="row py-2">
           <div class="col-md-6">
-            <fieldset disabled>
-              <label for="username">Username</label>
-              <input type="text" [(ngModel)]="Username" class="bg-light form-control" id="username" placeholder="{{Username}}">
-            </fieldset>
+            <label for="username">Username:</label>
+            <input type="text" [(ngModel)]="Username" class="bg-light form-control" id="username" placeholder="{{Username}}" [(ngModel)]="save.username">
           </div>
           <div class="col-md-6 pt-md-0 pt-3">
-            <fieldset disabled>
-              <label for="email">Email Address</label>
-              <input type="text" [(ngModel)]="Email" class="bg-light form-control" id="email" placeholder="{{Email}}">
-            </fieldset>
+            <label for="email">Email Address:</label>
+            <input type="text" [(ngModel)]="Email" class="bg-light form-control" id="email" placeholder="{{Email}}" [(ngModel)]="save.email">
           </div>
       </div>
       <div class="row py-2">
           <div class="col-md-6">
             <fieldset disabled>
-              <label for="role">Chat Role</label>
-              <input type="text" class="bg-light form-control" id="role" placeholder="{{Role}}">
+              <label for="role">Permission Level:</label>
+              <input type="text" class="bg-light form-control" id="role" placeholder="{{Role}}" [(ngModel)]="save.role">
             </fieldset>
           </div>
           <div class="col-md-6">
-            <fieldset disabled>
-              <label for="role">User ID</label>
-              <input type="text" class="bg-light form-control" id="role" placeholder="{{UserID}}">
-            </fieldset>
+            <label for="role">Password:</label>
+            <input type="text" class="bg-light form-control" id="role" placeholder="{{Password}}" [(ngModel)]="save.password">
           </div>
+        </div>
+        <div class="row py-2">
+          <div class="col-md-6">
+            <label for="role">Age:</label>
+            <input type="text" class="bg-light form-control" id="role" placeholder="{{Age}}" [(ngModel)]="save.age">
+          </div>
+          <button class="btn button border mt-4" (click)="saveChanges()" type="submit"><b>Save Changes</b></button>
       </div>
       <div class="row py-2">
           <div class="col-md-6">
-              <label for="country">Country</label>
+              <label for="country">Country:</label>
               <select name="country" id="country" class="bg-light">
                   <option value="australia" selected>Australia</option>
               </select>
           </div>
           <div class="col-md-6 pt-md-0 pt-3" id="lang">
-              <label for="language">Language</label>
+              <label for="language">Language:</label>
               <div class="arrow">
                   <select name="language" id="language" class="bg-light">
                     <option value="enguk">English UK</option>
