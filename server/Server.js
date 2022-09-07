@@ -149,7 +149,11 @@ app.post('/api/register', (req, res) => { // Register User to json file/localsto
   } else {
       console.log('Registered ' + registerEmail + ' successfully!');}
 
-      //TODO WRITE TO JSON
+      let toWriteData = JSON.stringify(newUserCredentials, null, 2);
+      fs.write('./routes/users.json', toWriteData, (err) => {
+        if (err) throw err;
+        console.log('Data written to file');
+    });
 
     //Send back response to the login function
     res.send(emailExists);
