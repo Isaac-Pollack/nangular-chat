@@ -19,11 +19,20 @@ export class AdminPanelComponent implements OnInit {
   ) {}
 
   userData: any;
+  groupData: any;
+  channelData: any;
+
   a_username = null;
   a_password = null;
   a_age = null;
   a_email = null;
   a_role = null;
+
+  a_channelname = null;
+  a_channelID = null;
+
+  a_groupname = null;
+  a_groupID = null;
 
   ngOnInit() {
     if (localStorage.getItem('username') == null) {
@@ -31,6 +40,8 @@ export class AdminPanelComponent implements OnInit {
       this.router.navigateByUrl('/login');
     } else {
       this.getUser();
+      this.getChannels();
+      this.getGroups();
     }
   }
 
@@ -67,6 +78,80 @@ export class AdminPanelComponent implements OnInit {
       .subscribe((data: any) => {
         if (data.valid) {
           alert('User Deleted');
+        }
+        window.location.reload();
+      });
+  }
+
+  public getChannels() {
+    this.http
+      .post(this.BACKEND_URL + '/api/list-channel', 'dummy req')
+      .subscribe((data: any) => {
+        this.channelData = data.channelValues.Channels;
+      });
+  }
+
+  public addChannel() {
+    this.http
+      .post(this.BACKEND_URL + '/api/add-channel', {
+        channelname: this.a_channelname,
+        channelID: this.a_channelID,
+      })
+      .subscribe((data: any) => {
+        if (data.valid == false) {
+          alert('This channel already exists');
+        } else if (data.valid == true) {
+          alert('Added channel!');
+          window.location.reload();
+        }
+      });
+  }
+
+  public removeChannel(channelname: string) {
+    this.http
+      .post(this.BACKEND_URL + '/api/delete-channel', {
+        channelname: channelname,
+      })
+      .subscribe((data: any) => {
+        if (data.valid) {
+          alert('Channel Deleted');
+        }
+        window.location.reload();
+      });
+  }
+
+  public getGroups() {
+    this.http
+      .post(this.BACKEND_URL + '/api/list-group', 'dummy req')
+      .subscribe((data: any) => {
+        this.groupData = data.groupValues.Groups;
+      });
+  }
+
+  public addGroup() {
+    this.http
+      .post(this.BACKEND_URL + '/api/add-group', {
+        groupname: this.a_groupname,
+        groupID: this.a_groupID,
+      })
+      .subscribe((data: any) => {
+        if (data.valid == false) {
+          alert('This group already exists');
+        } else if (data.valid == true) {
+          alert('Added group!');
+          window.location.reload();
+        }
+      });
+  }
+
+  public removeGroup(groupname) {
+    this.http
+      .post(this.BACKEND_URL + '/api/delete-group', {
+        groupname: groupname,
+      })
+      .subscribe((data: any) => {
+        if (data.valid) {
+          alert('Group Deleted');
         }
         window.location.reload();
       });

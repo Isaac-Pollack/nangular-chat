@@ -233,7 +233,6 @@ app.post("/api/add-user", (req, res) => {
 		for (let i = 0; i < tempObj.Users.length; i++) {
 			if (username == tempObj.Users[i]["username"]) {
 				exists = true;
-				break;
 			}
 		}
 		if (exists == false) {
@@ -274,7 +273,6 @@ app.post("/api/delete-user", (req, res) => {
 	}
 
 	var d_username = req.body.username;
-	var deleteData = { username: d_username };
 
 	fs.readFile("./routes/users.json", "utf8", function (error, data) {
 		const tempObj = JSON.parse(data);
@@ -294,78 +292,6 @@ app.post("/api/delete-user", (req, res) => {
 	});
 });
 
-app.post("/api/list-group-members", (req, res) => {
-	/* Check user credentials and return validity. */
-	//Error Checking
-	if (!req.body) {
-		return res.sendStatus(400);
-		console.log("Recieved Invalid Request: Error 400");
-	}
-});
-
-app.post("/api/delete-group-members", (req, res) => {
-	/* Check user credentials and return validity. */
-	//Error Checking
-	if (!req.body) {
-		return res.sendStatus(400);
-		console.log("Recieved Invalid Request: Error 400");
-	}
-});
-
-app.post("/api/add-group-member", (req, res) => {
-	/* Check user credentials and return validity. */
-	//Error Checking
-	if (!req.body) {
-		return res.sendStatus(400);
-		console.log("Recieved Invalid Request: Error 400");
-	}
-
-	var username = req.body.username;
-	var groupname = req.body.groupname;
-	var group_num = rand(1, 100000); //This is terrible but no time to deal with proper solution
-
-	fs.readFile("./routes/users.json", "utf8", function (error, data) {
-		const tempObj = JSON.parse(data);
-		exists = false;
-
-		for (let i = 0; i < tempObj.Groups.length; i++) {
-			for (let j = 0; j < tempObj.Groups[i]["user_list"].length; j++) {
-				if (username == tempObj.Groups[i]["user_list"][j]) {
-					exists = true;
-					break;
-				}
-			}
-		}
-		for (let i = 0; i < tempObj.Groups.length; i++) {
-			if (groupname == tempObj.Groups[i]["groupname"]) {
-				group_num = i;
-				break;
-			}
-		}
-
-		if (exists == false) {
-			tempObj.Groups[group_num]["user_list"].push(username);
-			res.send({ valid: true });
-		} else if (exists == true) {
-			res.send({ valid: false });
-		}
-
-		let retJson = JSON.stringify(tempObj);
-		fs.writeFile("./routes/users.json", retJson, "utf-8", function (err) {
-			if (err) throw err;
-		});
-	});
-});
-
-app.post("/api/list-group-admins", (req, res) => {
-	/* Check user credentials and return validity. */
-	//Error Checking
-	if (!req.body) {
-		return res.sendStatus(400);
-		console.log("Recieved Invalid Request: Error 400");
-	}
-});
-
 app.post("/api/list-channel", (req, res) => {
 	/* Check user credentials and return validity. */
 	//Error Checking
@@ -373,6 +299,12 @@ app.post("/api/list-channel", (req, res) => {
 		return res.sendStatus(400);
 		console.log("Recieved Invalid Request: Error 400");
 	}
+
+	fs.readFile("./routes/channels.json", "utf8", function (error, data) {
+		if (error) return console.log(error);
+		const channelValues = JSON.parse(data);
+		res.send({ channelValues });
+	});
 });
 
 app.post("/api/add-channel", (req, res) => {
@@ -382,6 +314,36 @@ app.post("/api/add-channel", (req, res) => {
 		return res.sendStatus(400);
 		console.log("Recieved Invalid Request: Error 400");
 	}
+
+	var channelname = req.body.channelname;
+	var channelID = req.body.channelID;
+
+	var addData = {
+		channelname: channelname,
+		channelID: channelID,
+	};
+
+	//console.log(age,birthdate,email,username,role);
+	fs.readFile("./routes/channels.json", "utf8", function (error, data) {
+		const tempObj = JSON.parse(data);
+		exists = false;
+		for (let i = 0; i < tempObj.Channels.length; i++) {
+			if (channelname == tempObj.Channels[i]["channelname"]) {
+				exists = true;
+			}
+		}
+		if (exists == false) {
+			tempObj.Channels.push(addData);
+			res.send({ valid: true });
+		} else if (exists == true) {
+			res.send({ valid: false });
+		}
+
+		let retJson = JSON.stringify(tempObj);
+		fs.writeFile("./routes/channels.json", retJson, "utf-8", function (err) {
+			if (err) throw err;
+		});
+	});
 });
 
 app.post("/api/delete-channel", (req, res) => {
@@ -391,15 +353,106 @@ app.post("/api/delete-channel", (req, res) => {
 		return res.sendStatus(400);
 		console.log("Recieved Invalid Request: Error 400");
 	}
+
+	var d_channel = req.body.channelname;
+
+	fs.readFile("./routes/channels.json", "utf8", function (error, data) {
+		const tempObj = JSON.parse(data);
+
+		for (let i = 0; i < tempObj.Channels.length; i++) {
+			if (d_channel == tempObj.Channels[i]["channelname"]) {
+				tempObj.Channels.splice(i, 1);
+				res.send({ valid: true });
+				console.log(tempObj);
+			}
+		}
+
+		let retJson = JSON.stringify(tempObj);
+		fs.writeFile("./routes/channels.json", retJson, "utf-8", function (err) {
+			if (err) throw err;
+		});
+	});
 });
 
-app.post("/api/add-user-to-channel", (req, res) => {
+app.post("/api/list-group", (req, res) => {
 	/* Check user credentials and return validity. */
 	//Error Checking
 	if (!req.body) {
 		return res.sendStatus(400);
 		console.log("Recieved Invalid Request: Error 400");
 	}
+
+	fs.readFile("./routes/groups.json", "utf8", function (error, data) {
+		if (error) return console.log(error);
+		const groupValues = JSON.parse(data);
+		res.send({ groupValues });
+	});
+});
+
+app.post("/api/add-group", (req, res) => {
+	/* Check user credentials and return validity. */
+	//Error Checking
+	if (!req.body) {
+		return res.sendStatus(400);
+		console.log("Recieved Invalid Request: Error 400");
+	}
+
+	var groupname = req.body.groupname;
+	var groupID = req.body.groupID;
+
+	var addData = {
+		groupname: groupname,
+		groupID: groupID,
+	};
+
+	fs.readFile("./routes/groups.json", "utf8", function (error, data) {
+		const tempObj = JSON.parse(data);
+		exists = false;
+		for (let i = 0; i < tempObj.Groups.length; i++) {
+			if (groupname == tempObj.Groups[i]["groupname"]) {
+				exists = true;
+			}
+		}
+		if (exists == false) {
+			tempObj.Groups.push(addData);
+			res.send({ valid: true });
+		} else if (exists == true) {
+			res.send({ valid: false });
+		}
+
+		let retJson = JSON.stringify(tempObj);
+		fs.writeFile("./routes/groups.json", retJson, "utf-8", function (err) {
+			if (err) throw err;
+		});
+	});
+});
+
+app.post("/api/delete-group", (req, res) => {
+	/* Check user credentials and return validity. */
+	//Error Checking
+	if (!req.body) {
+		return res.sendStatus(400);
+		console.log("Recieved Invalid Request: Error 400");
+	}
+
+	var d_group = req.body.groupname;
+
+	fs.readFile("./routes/groups.json", "utf8", function (error, data) {
+		const tempObj = JSON.parse(data);
+
+		for (let i = 0; i < tempObj.Groups.length; i++) {
+			if (d_group == tempObj.Groups[i]["channelname"]) {
+				tempObj.Groups.splice(i, 1);
+				res.send({ valid: true });
+				console.log(tempObj);
+			}
+		}
+
+		let retJson = JSON.stringify(tempObj);
+		fs.writeFile("./routes/groups.json", retJson, "utf-8", function (err) {
+			if (err) throw err;
+		});
+	});
 });
 
 //Export REST API

@@ -79,9 +79,18 @@ These structures are moved around and checked/tested against as needed.
 | [/](http://localhost:3000/api) | Displays the repo's README.md file rendered as HTML using [Marked.js](https://www.npmjs.com/package/marked). |
 | [/api/users](http://localhost:3000/api/users) | Displays all the users within the users.json file. // Converted to MongoDB in Pt2 // |
 | [/api/login](http://localhost:3000/api/login) | Tests validity of the input email + password from our login component against our JSON file, returning a True/False boolean for use in our login component. |
+[/api/login-after](http://localhost:3000/api/login-after) | Allows the editing of the users profile data in-page, saves it to the json file as well. |
 [/api/profile](http://localhost:3000/api/profile) | Requests the entire user data for the email that is currently logged in to populate the page |
-[/api/admin](http://localhost:3000/api/admin) | Checks the user has sufficient permissions, then allows them to manage others roles and create/delete channels |
 [/api/register](http://localhost:3000/api/register) | Tests whether the email entered in the request exists already, if not creates it within session storage and assigns dummy data to the other profile slots |
+[/api/list-user](http://localhost:3000/api/list-user) | Returns a list of all registered users |
+[/api/add-user](http://localhost:3000/api/add-user) | Allows Admin ability to add a new user |
+[/api/delete-user](http://localhost:3000/api/delete-user) | Allows Admin ability to delete a group |
+[/api/list-group](http://localhost:3000/api/list-group) | Returns a list of all registered groups |
+[/api/add-group](http://localhost:3000/api/add-group) | Allows Admin ability to add a new group |
+[/api/delete-group](http://localhost:3000/api/delete-group) | Allows Admin ability to delete a group |
+[/api/list-channel](http://localhost:3000/api/list-channel) | Returns a list of all registered channels |
+[/api/add-channel](http://localhost:3000/api/add-channel) | Allows Admin ability to add a new channel |
+[/api/delete-channel](http://localhost:3000/api/delete-channel) | Allows Admin ability to delete a channel |
 ## Application Interactions
 The client communicates to the server every time the page is loaded or the component is refreshed, and every page is tied to a request, to ensure session status.
 

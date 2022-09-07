@@ -1,5 +1,6 @@
 <router-outlet></router-outlet>
 
+<h1>USER MANAGEMENT</h1>
 <table class="table">
   <thead>
     <tr>
@@ -16,9 +17,7 @@
       <td>{{row.email}}</td>
       <td>{{row.role}}</td>
       <td>{{row.age}}</td>
-      <td>
-        <button (click)="removeUser(row.username)" class="btn btn-danger">Delete</button>
-      </td>
+      <td><button (click)="removeUser(row.username)" class="btn btn-danger">Delete</button></td>
     </tr>
   </tbody>
 </table>
@@ -30,7 +29,7 @@
           <div class="card-body p-5 text-center">
 
             <div class="mb-md-5 mt-md-4 pb-2">
-              <h2 class="fw-bold mb-2 text-uppercase pb-4">Add User</h2>
+              <h2 class="fw-bold mb-2 text-uppercase pb-4">Add New User</h2>
 
               <div class="form-outline form-white mb-4">
                 <label class="form-label" for="inputEmail">Email</label>
@@ -64,6 +63,94 @@
             <button (click)="addUser()" class="btn button w-100 p-4">Add User</button>
 
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h1>GROUP MANAGEMENT</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Group Name</th>
+      <th scope="col">Group ID</th>
+      <th scope="col">Manage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of groupData">
+      <td>{{row.groupname}}</td>
+      <td>{{row.groupID}}</td>
+      <td><button (click)="removeUser(row.groupname)" class="btn btn-danger">Delete</button></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="container py-5 h-100">
+  <div class="row d-flex justify-content-center align-items-center h-100">
+    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+      <div class="card bg-dark text-white" style="border-radius: 1rem;">
+        <div class="card-body p-5 text-center">
+
+          <div class="mb-md-5 mt-md-4 pb-2">
+            <h2 class="fw-bold mb-2 text-uppercase pb-4">Add New Group</h2>
+
+            <div class="form-outline form-white mb-4">
+              <label class="form-label" for="gname">Group Name</label>
+              <input type="gname" id="gname" class="form-control form-control-lg" [(ngModel)]="a_groupname" placeholder="Super Group"[ngModelOptions]="{standalone: true}"/>
+            </div>
+
+            <div class="form-outline form-white mb-4">
+              <label class="form-label" for="gID">Group ID</label>
+              <input type="gID" id="gID" class="form-control form-control-lg" [(ngModel)]="a_groupID" placeholder="124"[ngModelOptions]="{standalone: true}"/>
+            </div>
+
+          <button (click)="addGroup()" class="btn button w-100 p-4">Add Group</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<h1>CHANNEL MANAGEMENT</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Channel Name</th>
+      <th scope="col">Channel ID</th>
+      <th scope="col">Manage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of channelData">
+      <td>{{row.channelname}}</td>
+      <td>{{row.channelID}}</td>
+      <td><button (click)="removeUser(row.channelname)" class="btn btn-danger">Delete</button></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="container py-5 h-100">
+  <div class="row d-flex justify-content-center align-items-center h-100">
+    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+      <div class="card bg-dark text-white" style="border-radius: 1rem;">
+        <div class="card-body p-5 text-center">
+
+          <div class="mb-md-5 mt-md-4 pb-2">
+            <h2 class="fw-bold mb-2 text-uppercase pb-4">Add New Channel</h2>
+
+            <div class="form-outline form-white mb-4">
+              <label class="form-label" for="gname">Channel Name</label>
+              <input type="gname" id="gname" class="form-control form-control-lg" [(ngModel)]="a_channelname" placeholder="Super Group"[ngModelOptions]="{standalone: true}"/>
+            </div>
+
+            <div class="form-outline form-white mb-4">
+              <label class="form-label" for="gID">Channel ID</label>
+              <input type="cID" id="cID" class="form-control form-control-lg" [(ngModel)]="a_channelID" placeholder="124"[ngModelOptions]="{standalone: true}"/>
+            </div>
+
+          <button (click)="addChannel()" class="btn button w-100 p-4">Add Channel</button>
+
       </div>
     </div>
   </div>
