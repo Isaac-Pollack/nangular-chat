@@ -105,6 +105,18 @@ app.post('/api/admin', (req, res) => { // Check user credentials and return vali
   //Check if role matches allowed admin type, allowed roles are: ... TBD
 });
 
+app.post('/api/admin:all', (req, res) => { //Return all users in lo0calstorage + JSON
+  //Error Checking
+  if(!req.body){
+    return res.sendStatus(400);
+    console.log("Recieved Invalid Request: Error 400")
+  }
+
+  var jsonUserData = useraccounts.Users;
+
+  res.send(jsonUserData)
+});
+
 app.post('/api/register', (req, res) => { // Register User to json file/localstorage
   var emailExists = false;
 

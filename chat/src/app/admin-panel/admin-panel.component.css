@@ -72,3 +72,23 @@ h1 {
 .checkbox-menu li.active label:focus {
   background-color: #b8b8ff;
 }
+
+select:focus{
+  outline: none;
+}
+.button{
+  background-color: #fff;
+  color: #0779e4;
+}
+.button:hover{
+  background-color: #0779e4;
+  color: #fff;
+}
+.btn-primary{
+  background-color: #0779e4;
+}
+
+.form-control:focus{
+  box-shadow: none;
+  border: 1.5px solid #0779e4;
+}

@@ -18,6 +18,7 @@ export class LoginPageComponent implements OnInit {
   email: string = '';
   password: String = '';
   role: string = '';
+  error = false;
 
   constructor(
     private router: Router,

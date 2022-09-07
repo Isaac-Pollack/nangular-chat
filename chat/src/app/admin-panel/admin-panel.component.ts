@@ -10,11 +10,14 @@ import { StorageService } from '../Services/storage.service';
 })
 export class AdminPanelComponent implements OnInit {
   title = 'Admin Panel';
+  usersData = {};
   BACKEND_URL = 'http://localhost:3000';
+  htmlUserData = localStorage.getItem('All-User-Data');
+  grouptoadd = '';
 
   constructor(
     private router: Router,
-    private http: HttpClient,
+    public http: HttpClient,
     public StorageService: StorageService
   ) {}
 
@@ -25,15 +28,25 @@ export class AdminPanelComponent implements OnInit {
       this.router.navigateByUrl('/login');
     }
 
-    //Load Users.JSON
-    const dataDump = fetch(this.BACKEND_URL + '/api/users')
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (myJson) {
-        let userData = JSON.stringify(myJson.Users);
-        console.log(userData);
-        return userData;
-      });
+    if (localStorage.getItem('All-User-Data') == null) {
+      this.http
+        .post<any>(this.BACKEND_URL + '/api/admin:all', {})
+        .subscribe((data) => {
+          var strData = JSON.stringify(data);
+          console.log(strData);
+          localStorage.setItem('All-User-Data', strData);
+          location.reload();
+        });
+    }
+  }
+
+  deleteChannel() {
+    console.log('delete working');
+    localStorage.removeItem('test');
+  }
+
+  addChannel() {
+    console.log('add working');
+    //localStorage.setItem('test', 'test');
   }
 }
