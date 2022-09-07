@@ -174,16 +174,19 @@ app.post("/api/login-after", (req, res) => {
 		const obj = JSON.parse(data);
 		found = false;
 
-		if (email == obj.Users.find((el) => el.email == email)) {
-			obj.Users = changeData;
-			found = true;
-			res.send({ ok: true });
+		for (let i = 0; i < obj.Users.length; i++) {
+			if (email == obj.Users[i]["email"]) {
+				obj.Users[i] = changeData;
+				found = true;
+				res.send({ ok: true });
+			}
 		}
 
 		if (found == false) {
 			res.send({ ok: false });
 			obj.Users.push(changeData);
 		}
+
 		let objJson = JSON.stringify(obj);
 		fs.writeFile("./routes/users.json", objJson, "utf-8", function (err) {
 			if (err) throw err;
