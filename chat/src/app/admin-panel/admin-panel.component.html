@@ -1,78 +1,70 @@
-<h1>{{title}}</h1>
-
 <router-outlet></router-outlet>
 
-<div class="container">
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title text-uppercase mb-0">Manage Users</h5>
-            </div>
-            <div class="table-responsive">
-                <table class="table no-wrap user-table mb-0">
-                  <thead>
-                    <tr>
-                      <th scope="col" class="border-0 text-uppercase font-medium pl-4">USER ID</th>
-                      <th scope="col" class="border-0 text-uppercase font-medium">Username</th>
-                      <th scope="col" class="border-0 text-uppercase font-medium">Email</th>
-                      <th scope="col" class="border-0 text-uppercase font-medium">Channels</th>
-                      <th scope="col" class="border-0 text-uppercase font-medium">Role</th>
-                    </tr>
-                  </thead>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Username</th>
+      <th scope="col">Email</th>
+      <th scope="col">Role</th>
+      <th scope="col">Age</th>
+      <th scope="col">Manage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of userData">
+      <td>{{row.username}}</td>
+      <td>{{row.email}}</td>
+      <td>{{row.role}}</td>
+      <td>{{row.age}}</td>
+      <td>
+        <button (click)="removeUser(row.username)" class="btn btn-danger">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card bg-dark text-white" style="border-radius: 1rem;">
+          <div class="card-body p-5 text-center">
 
-                  <!-- BEGINNING OF ngFor -->
-                  <tbody>
-                    <tr>
-                      <td class="pl-4">1</td>
-                      <td>
-                          <h5 class="font-medium mb-0">super</h5>
-                      </td>
-                      <td>
-                          <span class="text-muted">super@test.com</span><br>
-                      </td>
-                        <td class="pl-4">{{htmlUserData}}</td>
-                      <td>
-                        <fieldset disabled>
-                        <select class="form-control category-select" id="roleSelect">
-                          <option>Super Admin</option>
-                          <option>Group Admin</option>
-                          <option>Group Assis</option>
-                        </select>
-                      </fieldset>
-                      </td>
-                    </tr>
-                  </tbody>
+            <div class="mb-md-5 mt-md-4 pb-2">
+              <h2 class="fw-bold mb-2 text-uppercase pb-4">Add User</h2>
 
-                  <!-- END OF ngFor -->
-                </table>
-            </div>
+              <div class="form-outline form-white mb-4">
+                <label class="form-label" for="inputEmail">Email</label>
+                <input type="email" id="inputEmail" class="form-control form-control-lg" [(ngModel)]="a_email" placeholder="example@example.com"[ngModelOptions]="{standalone: true}"/>
+              </div>
+
+              <div class="form-outline form-white mb-4">
+                <label class="form-label" for="inputPassword">Password</label>
+                <input type="password" id="inputPassword" class="form-control form-control-lg" [(ngModel)]="a_password" placeholder="example123"[ngModelOptions]="{standalone: true}"/>
+              </div>
+
+              <div class="form-outline form-white mb-4">
+                <label class="form-label" for="inputPassword">Username</label>
+                <input type="password" id="inputPassword" class="form-control form-control-lg" [(ngModel)]="a_username" placeholder="example" [ngModelOptions]="{standalone: true}"/>
+              </div>
+
+              <div class="form-outline form-white mb-4">
+                <label class="form-label" for="inputPassword">Age</label>
+                <input type="password" id="inputPassword" class="form-control form-control-lg" [(ngModel)]="a_age" placeholder="20" [ngModelOptions]="{standalone: true}"/>
+              </div>
+
+              <div class="form-outline form-white mb-4">
+                <label class="form-label">Role</label>
+                <select class="form-select">
+                  <option value="Super Admin" [(ngModel)]="a_role">Super Admin</option>
+                  <option value="Group Admin" [(ngModel)]="a_role">Group Admin</option>
+                  <option value="Group Assis" [(ngModel)]="a_role">Group Assis</option>
+                </select>
+              </div>
+
+            <button (click)="addUser()" class="btn button w-100 p-4">Add User</button>
+
         </div>
-    </div>
-    <div><br> DEBUG: <br>{{htmlUserData}}</div>
-  </div>
-  <div class="mt-5">
-    <h3 class="text-center">Channels</h3>
-    <!-- Add Channel -->
-    <div class='row mt-4'>
-      <div class="col w-40 h-100">
-        <input type="text" id="grouptoadd" class="form-control form-control-lg" placeholder='Channel 1' [(ngModel)]="grouptoadd" [ngModelOptions]="{standalone: true}" />
-      </div>
-      <div class="col">
-        <button class="btn button border width-100 h-100" (click)="deleteChannel()"><b>Add</b></button>
-      </div>
-    </div>
-
-    <!-- Delete Channel -->
-    <div class='row mt-4'>
-      <div class="col w-40 h-100">
-        <select class="form-control category-select width-100 h-100" id="groupSelect">
-          <option>Super Admin</option>
-        </select>
-      </div>
-      <div class="col">
-        <button class="btn button border width-100 h-100" (click)="deleteChannel()"><b>Delete</b></button>
       </div>
     </div>
   </div>
-
+</div>

@@ -188,12 +188,12 @@ app.post("/api/login-after", (req, res) => {
 			if (email == tempObj.Users[i]["email"]) {
 				tempObj.Users[i] = changeData;
 				found = true;
-				res.send({ ok: true });
+				res.send({ valid: true });
 			}
 		}
 
 		if (found == false) {
-			res.send({ ok: false });
+			res.send({ valid: false });
 			tempObj.Users.push(changeData);
 		}
 
@@ -227,7 +227,7 @@ app.post("/api/add-user", (req, res) => {
 	};
 
 	//console.log(age,birthdate,email,username,role);
-	fs.readFile("./Data/users.json", "utf8", function (error, data) {
+	fs.readFile("./routes/users.json", "utf8", function (error, data) {
 		const tempObj = JSON.parse(data);
 		exists = false;
 		for (let i = 0; i < tempObj.Users.length; i++) {
@@ -238,19 +238,19 @@ app.post("/api/add-user", (req, res) => {
 		}
 		if (exists == false) {
 			tempObj.Users.push(addData);
-			res.send({ ok: true });
+			res.send({ valid: true });
 		} else if (exists == true) {
-			res.send({ ok: false });
+			res.send({ valid: false });
 		}
 
 		let retJson = JSON.stringify(tempObj);
-		fs.writeFile("./Data/users.json", retJson, "utf-8", function (err) {
+		fs.writeFile("./routes/users.json", retJson, "utf-8", function (err) {
 			if (err) throw err;
 		});
 	});
 });
 
-app.post("/api/manage-user", (req, res) => {
+app.post("/api/get-users", (req, res) => {
 	/* Check user credentials and return validity. */
 	//Error Checking
 	if (!req.body) {
@@ -274,18 +274,16 @@ app.post("/api/delete-user", (req, res) => {
 	}
 
 	var d_username = req.body.username;
-
 	var deleteData = { username: d_username };
 
 	fs.readFile("./routes/users.json", "utf8", function (error, data) {
 		const tempObj = JSON.parse(data);
 
 		for (let i = 0; i < tempObj.Users.length; i++) {
-			if (username == tempObj.Users[i]["username"]) {
+			if (d_username == tempObj.Users[i]["username"]) {
 				tempObj.Users.splice(i, 1);
 				res.send({ valid: true });
 				console.log(tempObj);
-				break;
 			}
 		}
 
@@ -347,9 +345,9 @@ app.post("/api/add-group-member", (req, res) => {
 
 		if (exists == false) {
 			tempObj.Groups[group_num]["user_list"].push(username);
-			res.send({ ok: true });
+			res.send({ valid: true });
 		} else if (exists == true) {
-			res.send({ ok: false });
+			res.send({ valid: false });
 		}
 
 		let retJson = JSON.stringify(tempObj);

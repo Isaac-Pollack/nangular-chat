@@ -73,14 +73,14 @@ export class ProfilePageComponent implements OnInit {
           password: password,
         })
         .subscribe((data: any) => {
-          if (data.ok == true) {
+          if (data.valid == true) {
             alert('Information has been updated!');
             localStorage.setItem('username', username);
             localStorage.setItem('email', email);
             localStorage.setItem('role', role);
             localStorage.setItem('password', password);
             localStorage.setItem('age', age);
-          } else if (data.ok == false) {
+          } else if (data.valid == false) {
             alert('Information has been registered as a new user.');
             window.location.reload();
           }

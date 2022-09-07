@@ -10,10 +10,7 @@ import { StorageService } from '../Services/storage.service';
 })
 export class AdminPanelComponent implements OnInit {
   title = 'Admin Panel';
-  usersData = {};
   BACKEND_URL = 'http://localhost:3000';
-  htmlUserData = localStorage.getItem('All-User-Data');
-  grouptoadd = '';
 
   constructor(
     private router: Router,
@@ -21,32 +18,57 @@ export class AdminPanelComponent implements OnInit {
     public StorageService: StorageService
   ) {}
 
+  userData: any;
+  a_username = null;
+  a_password = null;
+  a_age = null;
+  a_email = null;
+  a_role = null;
+
   ngOnInit() {
-    //Check if already logged in
     if (localStorage.getItem('username') == null) {
       alert('You are not logged in, redirecting you...');
       this.router.navigateByUrl('/login');
-    }
-
-    if (localStorage.getItem('All-User-Data') == null) {
-      this.http
-        .post<any>(this.BACKEND_URL + '/api/admin:all', {})
-        .subscribe((data) => {
-          var strData = JSON.stringify(data);
-          console.log(strData);
-          localStorage.setItem('All-User-Data', strData);
-          location.reload();
-        });
+    } else {
+      this.getUser();
     }
   }
 
-  deleteChannel() {
-    console.log('delete working');
-    localStorage.removeItem('test');
+  public getUser() {
+    this.http
+      .post(this.BACKEND_URL + '/api/get-users', 'dummy req')
+      .subscribe((data: any) => {
+        this.userData = data.userValues.Users;
+      });
   }
 
-  addChannel() {
-    console.log('add working');
-    //localStorage.setItem('test', 'test');
+  public addUser() {
+    this.http
+      .post(this.BACKEND_URL + '/api/add-user', {
+        password: this.a_password,
+        username: this.a_username,
+        email: this.a_email,
+        age: this.a_age,
+        role: this.a_role,
+      })
+      .subscribe((data: any) => {
+        if (data.valid == false) {
+          alert('This user already exists');
+        } else if (data.valid == true) {
+          alert('Added user!');
+          window.location.reload();
+        }
+      });
+  }
+
+  public removeUser(username: string) {
+    this.http
+      .post(this.BACKEND_URL + '/api/delete-user', { username: username })
+      .subscribe((data: any) => {
+        if (data.valid) {
+          alert('User Deleted');
+        }
+        window.location.reload();
+      });
   }
 }

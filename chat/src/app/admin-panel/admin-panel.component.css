@@ -92,3 +92,12 @@ select:focus{
   box-shadow: none;
   border: 1.5px solid #0779e4;
 }
+
+th, td {
+  text-align: center;
+}
+
+.button {
+  padding-right: 100px;
+  padding-left: 100px;
+}
