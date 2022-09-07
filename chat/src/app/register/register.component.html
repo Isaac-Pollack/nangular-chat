@@ -10,12 +10,22 @@
 
             <div class="form-outline form-white mb-4">
               <label class="form-label" for="inputEmail">Email</label>
-              <input type="email" id="inputEmail" class="form-control form-control-lg" [(ngModel)]="email" [ngModelOptions]="{standalone: true}"/>
+              <input type="email" id="inputEmail" class="form-control form-control-lg" [(ngModel)]="Email" placeholder="example@example.com"[ngModelOptions]="{standalone: true}"/>
             </div>
 
             <div class="form-outline form-white mb-4">
               <label class="form-label" for="inputPassword">Password</label>
-              <input type="password" id="inputPassword" class="form-control form-control-lg" [(ngModel)]="password" [ngModelOptions]="{standalone: true}"/>
+              <input type="password" id="inputPassword" class="form-control form-control-lg" [(ngModel)]="Password" placeholder="example123"[ngModelOptions]="{standalone: true}"/>
+            </div>
+
+            <div class="form-outline form-white mb-4">
+              <label class="form-label" for="inputPassword">Username</label>
+              <input type="password" id="inputPassword" class="form-control form-control-lg" [(ngModel)]="Username" placeholder="example" [ngModelOptions]="{standalone: true}"/>
+            </div>
+
+            <div class="form-outline form-white mb-4">
+              <label class="form-label" for="inputPassword">Age</label>
+              <input type="password" id="inputPassword" class="form-control form-control-lg" [(ngModel)]="Age" placeholder="20" [ngModelOptions]="{standalone: true}"/>
             </div>
 
             <p class="small mb-4"><a class="text-white-50" href="#">Forgot password?</a></p>

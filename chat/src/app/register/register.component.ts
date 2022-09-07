@@ -13,8 +13,11 @@ const httpOptions = {
 })
 export class RegisterComponent implements OnInit {
   BACKEND_URL = 'http://localhost:3000';
-  email: string = '';
-  password: string = '';
+  //Register Info
+  Username = '';
+  Email = '';
+  Password = '';
+  Age = '';
 
   constructor(
     private router: Router,
@@ -35,21 +38,25 @@ export class RegisterComponent implements OnInit {
     console.log('Attempting to register...');
     this.http
       .post<any>(this.BACKEND_URL + '/api/register', {
-        email: this.email,
-        password: this.password,
+        email: this.Email,
+        role: 'Default',
+        age: this.Age,
+        username: this.Username,
+        password: this.Password,
       })
       .subscribe((data) => {
-        if (data == false) {
+        if (data.fullMatch == false) {
           console.log('Register Successful');
           //Clear storage to ensure no lingering data
           sessionStorage.clear();
           localStorage.clear();
 
           //Set localdata and API will save to JSON on server side
-          localStorage.setItem('email', this.email);
-          localStorage.setItem('username', this.email);
-          localStorage.setItem('userid', '3');
-          localStorage.setItem('role', 'Default');
+          localStorage.setItem('username', data.username);
+          localStorage.setItem('email', data.email);
+          localStorage.setItem('role', data.role);
+          localStorage.setItem('password', data.password);
+          localStorage.setItem('age', data.age);
           this.router.navigateByUrl('/profile');
         } else {
           console.log('Register Unsuccessful');

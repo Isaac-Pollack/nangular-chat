@@ -117,40 +117,50 @@ app.post("/api/register", (req, res) => {
 		console.log("Recieved Invalid Request: Error 400");
 	}
 
-	registerEmail = req.body.email;
-	registerPassword = req.body.password;
-	console.log("Recieved Register request for: " + registerEmail);
-	console.log("Password: " + registerPassword);
+	var r_age = req.body.age;
+	var r_email = req.body.email;
+	var r_username = req.body.username;
+	var r_role = req.body.role;
+	var r_password = req.body.password;
 
-	var userCredentials = useraccounts.Users.find(
-		(el) => el.email == registerEmail
-	); // Return first object with email that matches our req.body email
+	var userCredentials = useraccounts.Users.find((el) => el.email == r_email); // Return first object with email that matches our req.body email
 
-	var lastUserID = useraccounts.Users[useraccounts.Users.length - 1].userid; // Grab the last value for userid in our JSON file, so we can increment on it
+	var newData = {
+		fullMatch: false,
+		username: r_username,
+		email: r_email,
+		role: r_role,
+		password: r_password,
+		age: r_age,
+	};
 
-	let newUserCredentials = {
-		userid: lastUserID + 1,
-		username: registerEmail,
-		role: "Default",
-		email: registerEmail,
-		password: registerPassword,
+	var pushData = {
+		username: r_username,
+		email: r_email,
+		role: r_role,
+		password: r_password,
+		age: r_age,
 	};
 
 	if (userCredentials != null) {
 		console.log("FOUND EMAIL MATCH, ALERTING USER");
-		emailExists = true;
+		newData.fullMatch = true;
+		res.send(newData);
 	} else {
-		console.log("Registered " + registerEmail + " successfully!");
+		console.log("Registered " + r_email + " successfully!");
+		useraccounts.Users.push(newData);
+		res.send(newData);
+
+		//Save to local JSON
+		fs.readFile("./routes/users.json", "utf8", function (error, data) {
+			const obj = JSON.parse(data);
+			obj.Users.push(pushData);
+			let objJson = JSON.stringify(obj);
+			fs.writeFile("./routes/users.json", objJson, "utf-8", function (err) {
+				if (err) throw err;
+			});
+		});
 	}
-
-	let toWriteData = JSON.stringify(newUserCredentials, null, 2);
-	fs.write("./routes/users.json", toWriteData, (err) => {
-		if (err) throw err;
-		console.log("Data written to file");
-	});
-
-	//Send back response to the login function
-	res.send(emailExists);
 });
 
 app.post("/api/login-after", (req, res) => {
