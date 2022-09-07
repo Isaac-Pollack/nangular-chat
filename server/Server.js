@@ -181,12 +181,12 @@ app.post("/api/login-after", (req, res) => {
 	console.log(changeData);
 
 	fs.readFile("./routes/users.json", "utf8", function (error, data) {
-		const obj = JSON.parse(data);
+		const tempObj = JSON.parse(data);
 		found = false;
 
-		for (let i = 0; i < obj.Users.length; i++) {
-			if (email == obj.Users[i]["email"]) {
-				obj.Users[i] = changeData;
+		for (let i = 0; i < tempObj.Users.length; i++) {
+			if (email == tempObj.Users[i]["email"]) {
+				tempObj.Users[i] = changeData;
 				found = true;
 				res.send({ ok: true });
 			}
@@ -194,11 +194,11 @@ app.post("/api/login-after", (req, res) => {
 
 		if (found == false) {
 			res.send({ ok: false });
-			obj.Users.push(changeData);
+			tempObj.Users.push(changeData);
 		}
 
-		let objJson = JSON.stringify(obj);
-		fs.writeFile("./routes/users.json", objJson, "utf-8", function (err) {
+		let retJson = JSON.stringify(tempObj);
+		fs.writeFile("./routes/users.json", retJson, "utf-8", function (err) {
 			if (err) throw err;
 		});
 	});
@@ -211,6 +211,43 @@ app.post("/api/add-user", (req, res) => {
 		return res.sendStatus(400);
 		console.log("Recieved Invalid Request: Error 400");
 	}
+
+	var age = req.body.age;
+	var email = req.body.email;
+	var username = req.body.username;
+	var role = req.body.role;
+	var password = req.body.password;
+
+	var addData = {
+		username: username,
+		email: email,
+		role: role,
+		password: password,
+		age: age,
+	};
+
+	//console.log(age,birthdate,email,username,role);
+	fs.readFile("./Data/users.json", "utf8", function (error, data) {
+		const tempObj = JSON.parse(data);
+		exists = false;
+		for (let i = 0; i < tempObj.Users.length; i++) {
+			if (username == tempObj.Users[i]["username"]) {
+				exists = true;
+				break;
+			}
+		}
+		if (exists == false) {
+			tempObj.Users.push(addData);
+			res.send({ ok: true });
+		} else if (exists == true) {
+			res.send({ ok: false });
+		}
+
+		let retJson = JSON.stringify(tempObj);
+		fs.writeFile("./Data/users.json", retJson, "utf-8", function (err) {
+			if (err) throw err;
+		});
+	});
 });
 
 app.post("/api/manage-user", (req, res) => {
@@ -220,6 +257,12 @@ app.post("/api/manage-user", (req, res) => {
 		return res.sendStatus(400);
 		console.log("Recieved Invalid Request: Error 400");
 	}
+
+	fs.readFile("./routes/users.json", "utf8", function (error, data) {
+		if (error) return console.log(error);
+		const userValues = JSON.parse(data);
+		res.send({ userValues });
+	});
 });
 
 app.post("/api/delete-user", (req, res) => {
@@ -229,6 +272,28 @@ app.post("/api/delete-user", (req, res) => {
 		return res.sendStatus(400);
 		console.log("Recieved Invalid Request: Error 400");
 	}
+
+	var d_username = req.body.username;
+
+	var deleteData = { username: d_username };
+
+	fs.readFile("./routes/users.json", "utf8", function (error, data) {
+		const tempObj = JSON.parse(data);
+
+		for (let i = 0; i < tempObj.Users.length; i++) {
+			if (username == tempObj.Users[i]["username"]) {
+				tempObj.Users.splice(i, 1);
+				res.send({ valid: true });
+				console.log(tempObj);
+				break;
+			}
+		}
+
+		let retJson = JSON.stringify(tempObj);
+		fs.writeFile("./routes/users.json", retJson, "utf-8", function (err) {
+			if (err) throw err;
+		});
+	});
 });
 
 app.post("/api/list-group-members", (req, res) => {
@@ -259,39 +324,36 @@ app.post("/api/add-group-member", (req, res) => {
 
 	var username = req.body.username;
 	var groupname = req.body.groupname;
+	var group_num = rand(1, 100000); //This is terrible but no time to deal with proper solution
 
-	//console.log(username);
-	//console.log(groupname);
-	var group_num = 0;
+	fs.readFile("./routes/users.json", "utf8", function (error, data) {
+		const tempObj = JSON.parse(data);
+		exists = false;
 
-	//console.log(age,birthdate,email,username,role);
-	fs.readFile("./Data/group.json", "utf8", function (error, data) {
-		const obj = JSON.parse(data);
-		found = false;
-		for (let i = 0; i < obj.group.length; i++) {
-			for (let j = 0; j < obj.group[i]["user_list"].length; j++) {
-				if (username == obj.group[i]["user_list"][j]) {
-					found = true;
-					//console.log("roop1: "+obj.group[i]['user_list'][j]);
+		for (let i = 0; i < tempObj.Groups.length; i++) {
+			for (let j = 0; j < tempObj.Groups[i]["user_list"].length; j++) {
+				if (username == tempObj.Groups[i]["user_list"][j]) {
+					exists = true;
 					break;
 				}
 			}
 		}
-		for (let i = 0; i < obj.group.length; i++) {
-			if (groupname == obj.group[i]["groupname"]) {
+		for (let i = 0; i < tempObj.Groups.length; i++) {
+			if (groupname == tempObj.Groups[i]["groupname"]) {
 				group_num = i;
 				break;
 			}
 		}
-		//console.log(group_num);
-		if (found == false) {
-			obj.group[group_num]["user_list"].push(username);
+
+		if (exists == false) {
+			tempObj.Groups[group_num]["user_list"].push(username);
 			res.send({ ok: true });
-		} else if (found == true) {
+		} else if (exists == true) {
 			res.send({ ok: false });
 		}
-		let objJson = JSON.stringify(obj);
-		fs.writeFile("./Data/group.json", objJson, "utf-8", function (err) {
+
+		let retJson = JSON.stringify(tempObj);
+		fs.writeFile("./routes/users.json", retJson, "utf-8", function (err) {
 			if (err) throw err;
 		});
 	});
