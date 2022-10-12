@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { StorageService } from '../Services/storage.service';
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 
 @Component({
@@ -12,13 +12,13 @@ const httpOptions = {
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.css'],
 })
+
 export class LoginPageComponent implements OnInit {
   BACKEND_URL = 'http://localhost:3000';
   storageEnabled: boolean = false;
-  email: string = '';
-  password: String = '';
-  role: string = '';
-  error = false;
+  user: any = {};
+  username = '';
+  password:any = '';
 
   constructor(
     private router: Router,
@@ -27,12 +27,6 @@ export class LoginPageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    //Check if already logged in
-    if (localStorage.getItem('username') != null) {
-      alert('You are already logged in, redirecting you...');
-      this.router.navigateByUrl('/profile');
-    }
-
     //Tests storage for validity
     if (typeof Storage !== 'undefined') {
       this.storageEnabled = true;
@@ -49,25 +43,57 @@ export class LoginPageComponent implements OnInit {
   }
 
   logInUser() {
-    // Logs user to localstorage, ensures all fields are error-free & routes to /chat.
-    console.log('Attempting to login...');
-    this.http
-      .post<any>(this.BACKEND_URL + '/api/login', {
-        email: this.email,
-        password: this.password,
-      })
-      .subscribe((data) => {
-        if (data.fullMatch == true) {
-          console.log('Login Successful');
-          localStorage.setItem('username', data.username);
-          localStorage.setItem('email', data.email);
-          localStorage.setItem('role', data.role);
-          localStorage.setItem('password', data.password);
-          localStorage.setItem('age', data.age);
-          this.router.navigateByUrl('/profile');
-        } else {
-          console.log('Login Unsuccessful');
+    //Validate credentials
+    this.user = this.validate(this.username, this.password);
+
+    if (this.user != null) {
+      this.http.post(this.BACKEND_URL + "/api/auth", JSON.stringify(this.user), httpOptions).subscribe((data: any) => {
+        if (data.valid) {
+          sessionStorage.setItem('username', data.username);
+          this.http.get(this.BACKEND_URL + "/api/getUsers").subscribe((result: any) => {
+            for (let i = 0; i < result.length; i++) {
+              if (result[i].username == data.username) {
+                sessionStorage.setItem('role', result[i].role);
+                this.router.navigateByUrl('/profile');
+              }
+            }
+          });
+        }
+        else {
+          alert("Incorrect credentials");
         }
       });
+    }
   }
+
+    //Return details back or error
+    validate(username: any, password: any) {
+
+    var usernameValid = true;
+    var passwordValid = true;
+    var error: string = "";
+
+    if (username.length > 0) { //check 1: username is not empty
+      for (let i=0; i < username.length; i++) { //check 2: username does not contain spaces
+        if (username.charAt(i) == " ") {
+          usernameValid = false;
+          error = "Credentials must not contain spaces";
+        }
+      }
+    }
+    else { usernameValid = false; error = "Credentials must not be blank"; }
+
+    if (password != "") { // Can't be empty
+    }
+    else { passwordValid = false; error = "Password must not be blank"; }
+
+    if (usernameValid && passwordValid) {
+      return { username: username, password: password };
+    }
+    else {
+      alert(error);
+      return;
+    }
+  }
+
 }

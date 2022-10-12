@@ -7,24 +7,25 @@
 
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
-      <li><a class="nav-link unclickable">/\</a></li>
+      <li><a class="nav-link unclickable">|</a></li>
       <li class="nav-item">
-        <a class="nav-link btn" routerLink="/login" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">Login</a>
+        <!-- How we handle what should be done with a templating language like blade/jinja -->
+        <a *ngIf="!Auth" class="nav-link btn" routerLink="/login" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">Login</a>
+        <a *ngIf="Auth" class="nav-link btn" routerLink="/register">Logout</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link btn" routerLink="/register" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">Register</a>
+        <a *ngIf="!Auth" class="nav-link btn" routerLink="/register" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">Register</a>
       </li>
-      <li><a class="nav-link unclickable">/\</a></li>
+      <li><a *ngIf="Auth" class="nav-link unclickable">|</a></li>
       <li class="nav-item">
-        <a class="nav-link btn" routerLink="/profile" routerLinkActive="active-link">Profile</a>
-        <!-- TODO <a [routerLink ] = "[ '/users', user.id ]"> {{ user.username }} Profile </a> -->
+        <a *ngIf="Auth" (click)="verifyAuth()" routerLink="/profile" class="navBarItem">Profile</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link btn" routerLink="/admin" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">Admin</a>
+        <a *ngIf="Auth" class="nav-link btn" routerLink="/admin" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">Admin</a>
       </li>
-      <li><a class="nav-link unclickable">/\</a></li>
+      <li><a *ngIf="Auth" class="nav-link unclickable">|</a></li>
       <li class="nav-item">
-        <a class="nav-link btn" routerLink="/chat" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">Chat</a>
+        <a *ngIf="Auth" class="nav-link btn" routerLink="/chat" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">Chat</a>
       </li>
     </ul>
   </div>
