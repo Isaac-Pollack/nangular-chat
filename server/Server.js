@@ -1,17 +1,8 @@
-const express = require("express"); //Import express.js
-const app = express(); //Create the express application
-const http = require("http").Server(app);
-const path = require("path"); //Helps generating links to correct directory
-const cors = require("cors");
-const bodyParser = require("body-parser"); // Create an instance of body-parser
-const server = require("./Listen.js");
-const fs = require("fs"); //Filesystem interaction
-
-//Other Imports
-const useraccounts = require("./routes/users.json");
-const { marked } = require("marked"); //Markdown Parsing
-
-//Sockets.io - UNUSED AT THIS POINT
+const express = require('express')
+const app = express();
+const cors = require('cors');
+const path = require('path');
+const http = require('http').Server(app);
 const io = require("socket.io")(http, {
 	cors: {
 		origin: "http://localhost:4200",
@@ -19,26 +10,73 @@ const io = require("socket.io")(http, {
 	},
 });
 const sockets = require("./Socket.js");
+const server = require('./listen.js');
+fs = require('fs');
 
-//Define port used for the server
+const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
+app.use(bodyParser.json());
+
+//Other Imports
+const useraccounts = require("./routes/users.json");
+const { marked } = require("marked"); //Markdown Parsing
+
+app.use(function(req, res, next) {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	next();
+});
+
 const PORT = 3000;
-
-//Apply the middleware
-app.use(cors()); //Cross origin requests -  from localhost:3000 > localhost:4200
-app.use(express.urlencoded({ extended: true })); //
-app.use(express.json());
+app.use(cors());
 
 // Point static path to dist if you want to use your own server to serve Angular webpages
 app.use(express.static(path.join(__dirname + "/public"))); //Serve static content from the 'public'
 console.log("Static directory is: " + __dirname);
 
-//Setup Socket
+app.use(cors());
 sockets.connect(io, PORT);
-
-//Start server listening for requests.
 server.listen(http, PORT);
 
-//REST API Endpoints
+//Setup MongoDB Connection
+const MongoClient = require('mongodb').MongoClient;
+const url = 'mongodb://127.0.0.1:27017';
+MongoClient.connect(url, {maxPoolSize:10, useNewUrlParser: true, useUnifiedTopology: true}, function(err, client) {
+  //When we have a connection, start the app.
+  if (err) {return console.log(err)}
+  const dbName = '3813DB'
+  const db = client.db(dbName);
+
+	//Users
+	require('./routes/Users/login')(app, db); // Auth
+	require('./routes/Users/getUsers')(app, db); // All users
+	require('./routes/Users/deleteUser')(app, db); // Delete
+	require('./routes/Users/insertUser')(app, db); // Insert
+
+	//Groups
+	require('./routes/Groups/insertGroup')(app, db); //create a group
+	require('./routes/Groups/getGroups')(app, db); // All groups
+	require('./routes/Groups/deleteGroup')(app, db); // Delete
+	require('./routes/Groups/updateGroup')(app, db); // Update
+
+	//Channels
+	require('./routes/Channels/insertChannel')(app, db); // New channel
+	require('./routes/Channels/getChannels')(app, db); // All channels
+	require('./routes/Channels/deleteChannel')(app, db); // Delete
+
+	//Chat
+	require('./routes/Chat/getChatHistory')(app, db); // Return chat history
+	require('./routes/Chat/insertChatHistory')(app, db); // Insert
+	require('./routes/Chat/deleteChatHistory')(app, db); // Delete
+});
+
+//////////////////////////////////// Routes ////////////////////////////////////
+////////////////////////////////////       ////////////////////////////////////
+
 app.get("/api", function (req, res) {
 	// Render README.md at base as it contains lots of useful info, helpful!
 	var readme = "../README.md";
@@ -52,6 +90,18 @@ app.get("/api/users", function (req, res) {
 });
 
 app.post("/api/login", (req, res) => {
+	const collection = db.collection('credentials');
+
+    //Check if a user with that password exists
+    collection.find({'name':username, 'password':password}).count(function (err, count) {
+      assert.equal(null, err);
+
+      if (count > 0) { //Someone exists
+        res.send({'username':username, 'success':true});
+      }else{
+        res.send({'username':'', 'success':false});
+      }
+    });
 	// Check user credentials and return validity.
 	fullMatch = false;
 

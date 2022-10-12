@@ -1,15 +1,38 @@
+const { appendFile } = require("fs");
 module.exports = {
 
-    connect: function(io, PORT){
+    connect: function(io, port) {
 
+        // When a connection request comes in with a new user
         io.on('connection', (socket) => {
-          //When a connection request comes in output to the server console.
-          console.log('User connection on port ' + PORT + ' : ' + socket.id);
 
-          //When a message comes in, emit it back to all sockets with the message.
-          socket.on('message', (message) => {
-            io.emit('message', message);
-          })
+            socket.on('room', (room, username) => {
+                
+                socket.join(room); 
+                let content = username + " joined the " + room + " channel."
+                console.log(content);
+                io.to(room).emit('userJoined', content);
+                
+
+                socket.on('message', (message, username)=> {
+                    let d = new Date();
+                    let h = d.getHours();
+                    let m = d.getMinutes();
+                    let content = username + " at " + h + ":" + m + " - " + message;
+                    io.to(room).emit('message', content);
+                });
+
+                socket.on('disconnect', function() {
+                    let leaveMessage = username + " left the " + room + " channel.";
+                    console.log(leaveMessage);
+                    io.to(room).emit('userDisconnected', leaveMessage);
+                })
+            });
+
+
+            
+
         });
+
     }
 }

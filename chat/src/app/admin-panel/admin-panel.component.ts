@@ -34,6 +34,15 @@ export class AdminPanelComponent implements OnInit {
   a_groupname = null;
   a_groupID = null;
 
+  //Our edit form data
+  save = {
+    username: null,
+    email: null,
+    role: null, //Not making this editable from own profile page
+    password: null,
+    age: null,
+  };
+
   ngOnInit() {
     if (localStorage.getItem('username') == null) {
       alert('You are not logged in, redirecting you...');
@@ -70,6 +79,41 @@ export class AdminPanelComponent implements OnInit {
           window.location.reload();
         }
       });
+  }
+
+  editUser() {
+    console.log('Changes Saved');
+    const { email, role, age, username, password } = this.save;
+
+    if (
+      email != null &&
+      role != null &&
+      age != null &&
+      username != null &&
+      password != null
+    ) {
+      this.http
+        .post(this.BACKEND_URL + '/api/login-after', {
+          email: email,
+          role: role,
+          age: age,
+          username: username,
+          password: password,
+        })
+        .subscribe((data: any) => {
+          if (data.valid == true) {
+            alert('Information has been updated!');
+            localStorage.setItem('username', username);
+            localStorage.setItem('email', email);
+            localStorage.setItem('role', role);
+            localStorage.setItem('password', password);
+            localStorage.setItem('age', age);
+          } else if (data.valid == false) {
+            alert('Information has been registered as a new user.');
+            window.location.reload();
+          }
+        });
+    }
   }
 
   public removeUser(username: string) {
