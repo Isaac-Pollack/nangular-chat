@@ -14,7 +14,7 @@ export class ProfilePageComponent implements OnInit {
   BACKEND_URL = 'http://localhost:3000';
 
   //Profile Info
-  Username = this.capitalizeFirstLetter(localStorage.getItem('username'));
+  Username = localStorage.getItem('username');
   Email = localStorage.getItem('email');
   Role = localStorage.getItem('role');
   Password = localStorage.getItem('password');
