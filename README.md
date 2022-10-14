@@ -42,59 +42,128 @@ This project utilises Git and is hosted on Github, as these provide flexible and
 ## Data Structures
 All data will be stored as objects, written as JSON. We will follow a simple notation such as below;<br>
 
-{<br>
-  "userid": 1,<br>
-  "username": "group",<br>
-  "role": "Group Admin",<br>
-  "email": "group@test.com",<br>
-  "password": "test1"<br>
-}<br>
+### Users
 
-In actual practice we would not store password plain text at all, however this is just for learning.<br>
-These structures are moved around and checked/tested against as needed.
+| **Identifier** | **Data type** | **Example** |
+| --- | --- | --- |
+| \_id | Id | MongoDB-ID value |
+| Username | String | super |
+| Email | String | super@gmail.com |
+| Password | Number | 123 |
+| Role | String | SuperAdmin |
+
+    {
+      "_id": {
+        "$oid": "6348e7606d62c67aaf7c1c1d"
+      },
+      "username": "super",
+      "email": "super@gmail.com",
+      "password": 123,
+      "role": "SuperAdmin"
+    }
+
+### Chat History
+
+| **Identifier** | **Data type** | **Example** |
+| --- | --- | --- |
+| \_id | ObjectID | 6348e7606d62c67aaf7c1c1d |
+| Channel | String | Work Chatter |
+| Chats | String array | Isaac at 01:20 - Hi !
+
+    {
+      "_id": {
+        "$oid": "6348e7606d62c67aaf7c1c1d"
+      },
+      "channel": "Work Chatter",
+      "chats": [
+        "Isaac at 01:20 - Hi"
+      ]
+    }
+
+### Groups
+| **Identifier** | **Data type** | **Example** |
+| --- | --- | --- |
+| \_id | ObjectID | 6348e7606d62c67aaf7c1c1d |
+| Title | String | Work |
+| Members | String array | SuperAdmin, Isaac |
+
+    {
+      "_id": {
+        "$oid": "6348e7606d62c67aaf7c1c1d"
+      },
+      "title": "Work",
+      "members": [
+        "SuperAdmin",
+        "Isaac",
+      ]
+    }
+
+### Channels
+
+| **Identifier** | **Data type** | **Example** |
+| --- | --- | --- |
+| \_id | ObjectID | 6348e7606d62c67aaf7c1c1d |
+| Title | String | Work Chatter |
+| GroupName | String | Work |
+| Members | String array | SuperAdmin, Isaac
+
+    {
+      "_id": {
+        "$oid": "6348e7606d62c67aaf7c1c1d"
+      },
+      "title": "Work Chatter",
+      "groupName": "Work",
+      "members": [
+        "member",
+        "super"
+      ]
+    }
+
 ## Architecture
 ### Components
-<b>login-page: </b>Our entry point!<br>
-<b>register: </b>This page allows us to register to the local storage, and login using that.<br>
-<b>profile-page: </b>This page will show our stored information for our account, with an option for a profile picture.<br>
-<b>admin-panel: </b>This page is where the user with sufficient permissions will manage others roles and create/delete channels.
-<b>chat-page: </b>This is our main chat page, where you will enter/create channels and messages will appear.
-### Services
-<b>Storage: </b>This service homes our getItem and setItem for our browser storages.<br>
+| **Route** | **Parameters** | **Return Types** | **Description** |
+| --- | --- | --- | --- |
+| **/login** | String, String | Bool | Submits the user login data to the database, and return true if the data matches. |
+| **/getUsers** | None | [Object] | Retrieves an array of user objects from the database. |
+| **/deleteUser** | String | Bool | Requests that the server delete a user from the database, using the username as a reference for which user to delete. Returns true if no errors are encountered. |
+| **/insertUser** | String, String, Number, String | Bool | Creates a new user and publish it to the database. The server does some validation checks on parameters, and also checks whether or not the user already exists before performing the post request. Returns true if successful. |
+| **/insertgroup** | String, number, [String] | Bool | Creates a new group and publish it to the database. The server checks if the group already exists, and then performs the post request. Returns true if successful. |
+| **/getGroups** | None | [Object] | Retrives an array of group objects from the database. Returns an array of objects to the frontend. |
+| **/deleteGroup** | String | Bool | Deletes a group from the database. The server accepts the name of the group as a string, and performs the post request, returning true if successful. |
+| **/updateGroup** | Object, Object | Object | Changes the values of an already existing group. The servers accepts an object that represents the data of the group currently in the database, and another object that will replace the existing one. Returns the updated object. |
+| **/insertChannel** | String, String, [String] | Bool | Creates a new channel and publish it to the database. The server accepts the values for the new database, and after checking that the channel does not yet already exist, performs the post request, returning true if successful. |
+| **/getChannels** | None | [Object] | Retrieves a list of all channels in the database. Returns an array of objects representing the channels. |
+| **/deleteChannel** | String | Bool | Deletes an existing channel from the database. The server accepts the name of the database to delete as a String, and performs the delete request, returning true if successful. |
+| **/getChatHistory** | None | [Object] | Retrieves a list of all chat history that exists in the database. Returns an array of objects that represent the chat history. |
+| **/insertChatHistory** | String, [String] | Bool | Adds the chat from the frontend into the database. The server accepts the name of the channel and an array of the chat history, performs the post request, and returns true if successful. |
+| **/deleteChatHistory** | String | Bool | Deletes chat history of a channel on the front end from the database. The server accepts the name of the channel, checks if chat history exists for that channel, and then deletes it from the database. Returns true if successful. |
+
 ### Routes
 ' / ' - Redirects to /login to initialise session data checks<br>
 ' /login '<br>
-' /profile '<br>
+' /account '<br>
+' /group '<br>
+' /channel '<br>
 ' /admin '<br>
-' /chat '<br>
+' /adminGroup '<br>
+' /adminChannel '<br>
 ' ** ' - 404, page not found. This is our catch, and it redirects us back to the home page.
 
-### Node / Server
-{{THIS IS UNTRUE FOR PART 1, SIMPLY LOCAL STORAGE}}
+### Storage
 - The Node.js server storage utilizes a MongoDB database. The mongo database stores all of the user, group, and channel data as well as chat history.
 
+- The application utilizes sessionstorage for a number of items, mostly current login, but also items for returning to previous page, among others.
+
 ### API
-| Route  | Description |
-| ------------- | ------------- |
-| [/](http://localhost:3000/api) | Displays the repo's README.md file rendered as HTML using [Marked.js](https://www.npmjs.com/package/marked). |
-| [/api/users](http://localhost:3000/api/users) | Displays all the users within the users.json file. // Converted to MongoDB in Pt2 // |
-| [/api/login](http://localhost:3000/api/login) | Tests validity of the input email + password from our login component against our JSON file, returning a True/False boolean for use in our login component. |
-[/api/login-after](http://localhost:3000/api/login-after) | Allows the editing of the users profile data in-page, saves it to the json file as well. |
-[/api/profile](http://localhost:3000/api/profile) | Requests the entire user data for the email that is currently logged in to populate the page |
-[/api/register](http://localhost:3000/api/register) | Tests whether the email entered in the request exists already, if not creates it within session storage and assigns dummy data to the other profile slots |
-[/api/list-user](http://localhost:3000/api/list-user) | Returns a list of all registered users |
-[/api/add-user](http://localhost:3000/api/add-user) | Allows Admin ability to add a new user |
-[/api/delete-user](http://localhost:3000/api/delete-user) | Allows Admin ability to delete a group |
-[/api/list-group](http://localhost:3000/api/list-group) | Returns a list of all registered groups |
-[/api/add-group](http://localhost:3000/api/add-group) | Allows Admin ability to add a new group |
-[/api/delete-group](http://localhost:3000/api/delete-group) | Allows Admin ability to delete a group |
-[/api/list-channel](http://localhost:3000/api/list-channel) | Returns a list of all registered channels |
-[/api/add-channel](http://localhost:3000/api/add-channel) | Allows Admin ability to add a new channel |
-[/api/delete-channel](http://localhost:3000/api/delete-channel) | Allows Admin ability to delete a channel |
+
+| **Route** | **Parameters** | **Return Types** | **Description** |
+| --- | --- | --- | --- |
+| **/api** | None | .MD file as raw HTML | Displays the repo's README.md file rendered as HTML using [Marked.js](https://www.npmjs.com/package/marked). |
+
 ## Application Interactions
 The client communicates to the server every time the page is loaded or the component is refreshed, and every page is tied to a request, to ensure session status.
 
-I tried to mostly contain user data and relevant checking to the server side of the application (Server.js), with the client just reaching for the relevant information to consume. I believed on initial design this would be powerful provided proper caching abilities, however now that the application has become larger I believe the correct way to go about this would have been to abstract the api endpoint logic into seperate source files, and the frontend even more removed into relevant services. 
+Since part 1 I have destructured immensely, however there is still a lot of dependence on multiple files, even with decent levels of cohesion. This is a pain point now the application is larger and is something I wish to have decreased
 
 These are aspects that I had only discovered upon implementing it the way that I did. This would stop things such as having to specify my BACKEND_URL every component, and hiding sensitive data from the frontend a little more, albeit not being secure in the first place. The focus was as much as possible, rather than total disregard, however.
 

@@ -1,6 +1,6 @@
 module.exports = function (app, db) {
 
-    // Delete channel from DB
+    // Deletes channel from DB
     app.post("/api/deleteChannel", (req, res) => {
         var query = { title: req.body.title };
         console.log("deleting channel: ", req.body.title);

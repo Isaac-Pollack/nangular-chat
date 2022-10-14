@@ -1,13 +1,12 @@
 module.exports = function (app, db) {
 
-    /* This is a post request that is called when the user clicks the submit button on the create group
-    page. It takes the information from the form and inserts it into the database. */
+    // Inserts group if doesnt exist already
     app.post("/api/insertGroup", (req, res) => {
         var groupObj = { title: req.body.title, capacity: req.body.capacity, members: req.body.members }
 
         var groupExists = false;
 
-        //check if group already exists
+        //Check existence
         var query = { title: req.body.title };
         db.collection('groups').find(query).toArray(function(err, result) {
             if (err) throw err;
@@ -17,7 +16,7 @@ module.exports = function (app, db) {
         });
 
         if (!groupExists) {
-            //insert the new group into db
+            //Insert
             db.collection('groups').insertOne(groupObj, function(err, result) {
                 if (err) throw err;
                 res.send(true);

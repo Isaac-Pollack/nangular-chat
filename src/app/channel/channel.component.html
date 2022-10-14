@@ -1,0 +1,28 @@
+<h1><u>{{username}}</u>, you are now chatting in: <i>{{channelTitle}}</i></h1>
+
+<p class="alert alert-success text-center mt-3">{{userJoined}}</p>
+<div class="msgbox">
+
+    <div *ngFor="let message of formattedMessages" class="msgcontainer">
+        <div class="align-left border px-2 h-100">
+            <img src="assets/Placeholder_PP.png" alt="" class="messageImg">
+            <p>{{message.name}}</p>
+        </div>
+        <div class="align-right">
+            <p class="border px-3 text-break">{{message.message}}</p>
+            <p class="msgtime">{{message.time}}</p>
+        </div>
+    </div>
+</div>
+
+<form class="m-3 text-center d-flex justify-content-center">
+    <input class="form-control" rows="3" type="textarea" [(ngModel)]="messageContent" name="messageContent" placeholder="Message @{{channelTitle}}"> <br>
+    <button class="btn btn-outline-success mx-2" (click)="sendMessage()">Send</button>
+</form>
+
+<div class="d-flex justify-content-around mt-2">
+<div *ngIf="userRole == 'SuperAdmin'">
+    <button class="btn btn-danger mr-2" (click)="clearHistory()">Clear History</button>
+</div>
+<button class="btn btn-outline-primary" (click)="goBack()">Go Back</button>
+</div>

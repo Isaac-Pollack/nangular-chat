@@ -1,6 +1,6 @@
 module.exports = function (app, db) {
 
-    /* Deleting a user from the database. */
+    // Delete user from DB
     app.post("/api/deleteUser", (req, res) => {
         var query = { username: req.body.username };
         console.log("deleting user: ", req.body.username);

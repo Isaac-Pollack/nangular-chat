@@ -1,11 +1,11 @@
 module.exports = function (app, db) {
 
-    // Delete chat history from DB
+    // Delete chat history
     app.post("/api/deleteChats", (req, res) => {
-        
+
         var query = { channel: req.body.channel };
 
-        // Check for existence
+        //Check existence
         db.collection('chats').find(query).toArray(function(err, result) {
             if (err) throw err;
             if (result.length != 0) {
@@ -15,7 +15,7 @@ module.exports = function (app, db) {
                 });
             }
         });
-        
+
     });
 
 }

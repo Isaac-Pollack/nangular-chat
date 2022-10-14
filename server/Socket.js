@@ -3,16 +3,15 @@ module.exports = {
 
     connect: function(io, port) {
 
-        // When a connection request comes in with a new user
+        //Event: connect to chat
         io.on('connection', (socket) => {
 
             socket.on('room', (room, username) => {
-                
-                socket.join(room); 
-                let content = username + " joined the " + room + " channel."
+
+                socket.join(room);
+                let content = username + " joined " + room + " channel."
                 console.log(content);
                 io.to(room).emit('userJoined', content);
-                
 
                 socket.on('message', (message, username)=> {
                     let d = new Date();
@@ -23,16 +22,11 @@ module.exports = {
                 });
 
                 socket.on('disconnect', function() {
-                    let leaveMessage = username + " left the " + room + " channel.";
+                    let leaveMessage = username + " left " + room + " channel.";
                     console.log(leaveMessage);
                     io.to(room).emit('userDisconnected', leaveMessage);
                 })
             });
-
-
-            
-
         });
-
     }
 }

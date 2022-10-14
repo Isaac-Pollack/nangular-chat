@@ -1,0 +1,68 @@
+h1, h2 {
+  margin: auto;
+  text-align: center;
+}
+
+.msgbox {
+  height: 60vh;
+  width: 45%;
+  text-align: center;
+  background-color: lightgrey;
+  margin: auto;
+  overflow:hidden;
+  overflow-y:scroll;
+}
+
+.overflow {
+  max-height: 100%;
+  overflow:hidden;
+  overflow-y:scroll;
+}
+
+.messageBox {
+  margin: auto;
+  text-align: center;
+  padding: 15px;
+}
+
+.msgcontainer {
+
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  height: 100px;
+  margin: 10px 0;
+}
+
+
+.msgtime {
+  float: right;
+  color: #aaa;
+}
+
+img {
+  width: 50px;
+  float: left;
+  padding: 10px;
+
+}
+
+.align {
+  width: 50%;
+}
+
+.align-left {
+  border: #aaa;
+  border-radius: 2px;
+  left: 0;
+  float: left;
+}
+
+.align-right {
+  right: 0;
+  float: right;
+}
+
+.userJoin {
+  text-align: center;
+}

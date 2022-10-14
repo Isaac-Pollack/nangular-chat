@@ -1,0 +1,57 @@
+    <h1 class="text-center mt-2 mb-2">Group Management</h1>
+
+    <div class="m-4">
+    <table class="table table-responsive table-hover table-bordered text-center mb-5">
+        <thead>
+            <tr class="fw-bold">
+                <td>Title</td>
+                <td>Members</td>
+                <td colspan="2">Group Actions</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let group of groups">
+                <td>{{ group.title }}</td>
+                <td>
+                    <ul class="list-group">
+                      [ {{group.title}} Channel ]
+                        <li *ngFor="let member of group.members" class="list-group-item border m-1">
+                            {{member}}
+                                <button class="btn btn-danger m-2" *ngIf="memberRoleCheck(member) == true" (click)="removeUserFromGroup(member, group)">
+                                {{group.title}} - Remove</button>
+                            <br>
+                          </li>
+                    </ul>
+                </td>
+
+                <td><button class="btn btn-danger mb-2 mt-3" (click)="deleteGroup(group)">Delete {{group.title}}</button></td>
+                <td>
+                    <form class="mt-3 text-center d-flex justify-content-center">
+                        <select placeholder="Add Member" name="addUser" [(ngModel)]="addUser">
+                            <option *ngFor="let user of users" value="{{user.username}}">{{user.username}}</option>
+                        </select>
+                        <button class="btn btn-success mx-2" (click)="addMembers(addUser, group)">Add</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 class="text-center mt-2 mb-2"> Create a Group </h2>
+
+    <form class="form-control d-flex flex-column align-items-center">
+        <label class="mt-2" for="title">Group Title: </label>
+        <input class="m-3" type="text" name="title" [(ngModel)]="title">
+
+        <label for="members">Add Members: </label>
+        <select class="m-3" multiple aria-label="multiple select" [(ngModel)]="members" multiple>
+          <option *ngFor="let user of usersForCreate" value="{{user.username}}">{{user.username}}</option>
+        </select><br>
+
+        <button class="btn btn-success mb-2" (click)="createGroup()">Create</button>
+    </form>
+</div>
+<div class="mt-5 m-4 d-flex justify-content-center"><button class="btn btn-outline-primary" (click)="goBack()">Go Back</button></div>
+
+
+

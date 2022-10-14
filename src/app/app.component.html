@@ -1,0 +1,30 @@
+<!-- Nav + Outlet for Page Template-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand mx-3" routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">LOGO</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li><a class="nav-link unclickable">|</a></li>
+      <li class="nav-item">
+        <!-- How we handle what should be done with a templating language like blade/jinja -->
+        <a *ngIf="Auth == false" class="nav-link btn" routerLink="/login" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">Login</a>
+        <a *ngIf="Auth == true" class="nav-link btn" (click)="logout()">Logout</a>
+      </li>
+      <li class="nav-item">
+        <a *ngIf="Auth == false" class="nav-link btn" routerLink="/register" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">Register</a>
+      </li>
+      <li><a *ngIf="Auth == true" class="nav-link unclickable">|</a></li>
+      <li class="nav-item">
+        <a *ngIf="Auth == true" class="nav-link btn" (click)="verifyAuth()" routerLink="/account" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">Profile</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+
+<div>
+  <router-outlet></router-outlet>
+</div>

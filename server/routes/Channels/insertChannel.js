@@ -1,12 +1,13 @@
 module.exports = function (app, db) {
 
-    // Post channel, check existence, insert. Otherwise send fake response.
+    //Check if channel exists, if not insert into DB
     app.post("/api/insertChannel", (req, res) => {
-        var channel = { title: req.body.title, groupName: req.body.groupName , members: req.body.members }
+        var channelObj = { title: req.body.title, groupName: req.body.groupName , members: req.body.members }
 
         var channelExists = false;
 
-        // Does channel exist already
+
+        //Check existance
         var query = { title: req.body.title };
         db.collection('channels').find(query).toArray(function(err, result) {
             if (err) throw err;
@@ -16,8 +17,8 @@ module.exports = function (app, db) {
         });
 
         if (!channelExists) {
-            // Insert channel
-            db.collection('channels').insertOne(channel, function(err, result) {
+            //Insert
+            db.collection('channels').insertOne(channelObj, function(err, result) {
                 if (err) throw err;
                 res.send(true);
             });

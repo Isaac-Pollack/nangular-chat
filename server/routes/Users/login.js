@@ -1,26 +1,21 @@
 module.exports = function(app, db){
 
-    //Returns a true or false re: credentials matching
+  //Checks credentials and returns validity
     app.post("/api/auth", async (req, res) => {
-        //Error Checking
-        if (!req.body) {
-            return res.sendStatus(400);
-        }
-    
-        var usernameResult = req.body.username;
-        var passwordResult = req.body.password;
-    
-        console.log("Logging in:", usernameResult);
-        console.log("Password:", passwordResult);
-    
-        user = {username: usernameResult, password: passwordResult};
-    
-        const collection = db.collection('users');
-    
-        //0 means no user match
-        collection.countDocuments((user), function (err, count) {
+
+        var usernameSubmission = req.body.username;
+        var passwordSubmission = req.body.password;
+
+        console.log("Successfully authenticated:", usernameSubmission);
+
+        userObject = {username: usernameSubmission, password: passwordSubmission};
+
+        const collection = db.collection("users");
+
+        //1 if valid, 0 if invalid, simple !TODO increase error checking
+        collection.countDocuments((userObject), function (err, count) {
             if (count > 0) {
-                res.send({'username': usernameResult, 'valid': true});
+                res.send({'username': usernameSubmission, 'valid': true});
             }
             else {
                 res.send({'valid': false});

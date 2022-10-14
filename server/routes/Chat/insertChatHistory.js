@@ -1,6 +1,6 @@
 module.exports = function (app, db) {
 
-    // Insert channel + chat from req
+    // Takes the channel and chats from the request body and inserts them into the DB
     app.post("/api/insertChats", (req, res) => {
 
         var chatObj = { channel: req.body.channel, chats: req.body.chats }

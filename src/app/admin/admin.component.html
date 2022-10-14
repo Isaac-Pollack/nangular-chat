@@ -1,0 +1,31 @@
+<div *ngIf="userBeingUpdated">
+    <h1>User management: {{inputUsername}}</h1>
+</div>
+
+<form>
+    <label for="inputUsername">Name: </label>
+    <input class="m-3" type="text" name="inputUsername" [(ngModel)]="inputUser.username" placeholder="{{inputUsername}}"><br>
+
+    <label for="inputEmail">Email: </label>
+    <input class="m-3" type="text" name="inputEmail" [(ngModel)]="inputUser.email" placeholder="{{inputEmail}}"><br>
+
+    <label for="inputPassword">Password: </label>
+    <input class="m-3" type="number" name="inputPassword" [(ngModel)]="inputUser.password"><br>
+
+    <label for="inputRole">Role: </label>
+    <select class="m-3" name="inputRole" [(ngModel)]="inputUser.role">
+        <option value="Member">Member</option>
+        <option *ngIf="(userRole == 'SuperAdmin') || (userRole == 'GroupAdmin')" value="GroupAssis">Group Assistant</option>
+        <option *ngIf="userRole == 'SuperAdmin'" value="GroupAdmin">Group Admin</option>
+        <option *ngIf="userRole == 'SuperAdmin'" value="SuperAdmin">Super Admin</option>
+    </select><br>
+
+    <label for="profilePic">Profile Picture: </label>
+    <input class="m-3" type="file" name="profilePic" (change)="onFileSelection($event)">
+
+    <div class="d-flex justify-content-center mt-3">
+      <button class="btn btn-primary d-block" (click)="submitForm(inputUser)">Submit</button>
+  </div>
+</form>
+
+<h4 class="text-center mt-3 text-muted">If the above user does not exist, the system will create a new user.</h4>

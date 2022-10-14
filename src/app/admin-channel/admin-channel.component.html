@@ -1,0 +1,37 @@
+<h1> Create a Channel </h1>
+
+<form class="mt-3 text-center justify-content-center">
+    <label for="title">Channel Title: </label>
+    <input type="text" name="title" [(ngModel)]="title"><br>
+
+    <label for="members">Add Members: </label>
+    <select name="members" [(ngModel)]="members" multiple>
+        <option *ngFor="let user of users" value="{{user.username}}">{{user.username}}</option>
+    </select><br>
+
+    <button class="btn btn-success" (click)="createChannel()">Create Channel</button>
+</form>
+
+<h2>List of existing Channels: </h2>
+<table class="table table-responsive table-hover table-bordered m-4">
+    <thead>
+        <tr class="fw-bold">
+            <td>Title</td>
+            <td>Group</td>
+            <td>Members</td>
+            <td colspan="2">Actions</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let channel of channels">
+            <td>{{ channel.title }}</td>
+            <td>{{ channel.groupName }}</td>
+            <td>
+                <ul class="list-group">
+                  <li *ngFor="let member of channel.members" class="m1"> {{member}}</li>
+                </ul>
+            </td>
+            <td><button class="btn btn-danger" (click)="deleteChannel(channel)">Delete</button></td>
+        </tr>
+    </tbody>
+</table>
