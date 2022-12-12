@@ -1,4 +1,5 @@
 # Nangular Chat
+
 This project repo is split into two folders;
 
 'Chat' - The frontend aspect
@@ -8,38 +9,51 @@ This project repo is split into two folders;
 ## ////////////////////////////////////////////////////////////////////////////////
 
 To begin local development/installation you will need to run the following:
+
+Frontend/Angular:
+
 ```console
 cd nangular-chat/chat
 npm install
 ```
-And also
+
+Server/Express:
+
 ```console
 cd nangular-chat/server
 npm install
 ```
 
 ## Running Locally
+
 CORS middleware is installed to make this seamless, so make sure to have run the above steps before hand. As this is split into two folders, you will need to run both the server side and the Angular application for full functionality. This can be achieved by running the following:
-### Server
-```console
-cd nangular-chat/server
-node server.js
-```
-And all server actions will take place over [localhost:3000](localhost:3000)
 
 ### Frontend
+
 ```console
 cd nangular-chat/server
 ng serve
 ```
+
+### Server
+
+```console
+cd nangular-chat/server
+node server.js
+```
+
+And all server actions will take place over [localhost:3000](localhost:3000)
+
 Allowing the frontend to be accessed via [localhost:4200](localhost:4200)
 
-## ////////////////////////////////////////////////////////////////////////////////
+## /////////////////////////////////////////////////////////////////////////////////
 
 ## Version Control
+
 This project utilises Git and is hosted on Github, as these provide flexible and free version control across multiple devices which is a big positive for me, moving between. I am able to go at my own pace with development and merge as I see fit, with the option of collaboration later down the line with little to no change. I mainly use the repo solely for backup purposes as my local copies contain any changes, but committing often is something I strive to do.
 
 ## Data Structures
+
 All data will be stored as objects, written as JSON. We will follow a simple notation such as below;<br>
 
 ### Users
@@ -81,6 +95,7 @@ All data will be stored as objects, written as JSON. We will follow a simple not
     }
 
 ### Groups
+
 | **Identifier** | **Data type** | **Example** |
 | --- | --- | --- |
 | \_id | ObjectID | 6348e7606d62c67aaf7c1c1d |
@@ -120,7 +135,9 @@ All data will be stored as objects, written as JSON. We will follow a simple not
     }
 
 ## Architecture
+
 ### Components
+
 | **Route** | **Parameters** | **Return Types** | **Description** |
 | --- | --- | --- | --- |
 | **/login** | String, String | Bool | Submits the user login data to the database, and return true if the data matches. |
@@ -139,6 +156,7 @@ All data will be stored as objects, written as JSON. We will follow a simple not
 | **/deleteChatHistory** | String | Bool | Deletes chat history of a channel on the front end from the database. The server accepts the name of the channel, checks if chat history exists for that channel, and then deletes it from the database. Returns true if successful. |
 
 ### Routes
+
 ' / ' - Redirects to /login to initialise session data checks<br>
 ' /login '<br>
 ' /account '<br>
@@ -150,6 +168,7 @@ All data will be stored as objects, written as JSON. We will follow a simple not
 ' ** ' - 404, page not found. This is our catch, and it redirects us back to the home page.
 
 ### Storage
+
 - The Node.js server storage utilizes a MongoDB database. The mongo database stores all of the user, group, and channel data as well as chat history.
 
 - The application utilizes sessionstorage for a number of items, mostly current login, but also items for returning to previous page, among others.
@@ -161,6 +180,7 @@ All data will be stored as objects, written as JSON. We will follow a simple not
 | **/api** | None | .MD file as raw HTML | Displays the repo's README.md file rendered as HTML using [Marked.js](https://www.npmjs.com/package/marked). |
 
 ## Application Interactions
+
 The client communicates to the server every time the page is loaded or the component is refreshed, and every page is tied to a request, to ensure session status.
 
 Since part 1 I have destructured immensely, however there is still a lot of dependence on multiple files, even with decent levels of cohesion. This is a pain point now the application is larger and is something I wish to have decreased
@@ -168,20 +188,27 @@ Since part 1 I have destructured immensely, however there is still a lot of depe
 These are aspects that I had only discovered upon implementing it the way that I did. This would stop things such as having to specify my BACKEND_URL every component, and hiding sensitive data from the frontend a little more, albeit not being secure in the first place. The focus was as much as possible, rather than total disregard, however.
 
 ## Angular - (Client) Specific
+
 ### Development server
+
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 ### Code scaffolding
+
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 ### Build
+
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ### Running unit tests
+
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
 ### Running end-to-end tests
+
 Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
 ### Further help
+
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.

@@ -1,22 +1,22 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root',
 })
 export class StorageService {
-  BACKEND_URL = 'http://localhost:3000';
-  jsonItems = {};
+	BACKEND_URL = "http://localhost:3000";
+	jsonItems = {};
 
-  constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient) {}
 
-  NgOnInit() {}
+	NgOnInit() {}
 
-  setItem(key, item) {
-    this.jsonItems[key] = item;
-  }
+	setItem(key, item) {
+		this.jsonItems[key] = item;
+	}
 
-  getItem(key) {
-    return this.jsonItems[key];
-  }
+	getItem(key) {
+		return this.jsonItems[key];
+	}
 }
