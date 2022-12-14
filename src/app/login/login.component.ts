@@ -60,6 +60,7 @@ export class LoginComponent implements OnInit {
 								}
 							});
 					} else {
+						console.log("Unsuccessfull authentication, please try again!");
 						alert("Incorrect credentials!");
 					}
 				});

@@ -15,14 +15,15 @@
       <fieldset disabled>
         <div class="col-md-6">
           <label for="username">Username:</label>
-          <input type="text" [(ngModel)]="username" class="bg-light form-control" id="username" placeholder="{{username}}">
+          <input type="text" [(ngModel)]="username" class="bg-light form-control" id="username"
+            placeholder="{{username}}">
         </div>
       </fieldset>
     </div>
     <div class="row py-2">
       <fieldset disabled>
         <div class="col-md-6">
-          <label for="email">Email:</label>s
+          <label for="email">Email:</label>
           <input type="text" [(ngModel)]="email" class="bg-light form-control" id="email" placeholder="{{email}}">
         </div>
       </fieldset>
@@ -37,33 +38,35 @@
       <button class="btn button border mt-4" (click)="logOut()"><b>Logout</b></button>
     </div>
 
-  <!--  All members can view groups -->
-  <div class="border mt-4 border-primary">
-  <h2 class="text-center mt-2 mb-2">GROUP MANAGEMENT</h2>
-  <table class="table table-responsive table-striped table-hover table-bordered">
-    <thead>
-      <tr>
-        <th scope="col" class="text-center">Name</th>
-        <th colspan="2" scope="col" class="text-center">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let group of groups" class="text-center">
-        <td>{{group.title}}</td>
-        <td class="align-self-center"><button class="btn btn-primary" (click)="linkToGroup(group)">View</button></td>
-        <td><button class="btn btn-danger" *ngIf="(userRole == 'GroupAdmin') || (userRole == 'SuperAdmin')" (click)="deleteGroup(group)">Delete</button></td>
-      </tr>
-    </tbody>
-  </table>
+    <!--  All members can view groups -->
+    <div class="border mt-4 border-primary">
+      <h2 class="text-center mt-2 mb-2">GROUP MANAGEMENT</h2>
+      <table class="table table-responsive table-striped table-hover table-bordered">
+        <thead>
+          <tr>
+            <th scope="col" class="text-center">Name</th>
+            <th colspan="2" scope="col" class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let group of groups" class="text-center">
+            <td>{{group.title}}</td>
+            <td class="align-self-center"><button class="btn btn-primary" (click)="linkToGroup(group)">View</button>
+            </td>
+            <td><button class="btn btn-danger" *ngIf="(userRole == 'GroupAdmin') || (userRole == 'SuperAdmin')"
+                (click)="deleteGroup(group)">Delete</button></td>
+          </tr>
+        </tbody>
+      </table>
 
-  <div class="row py-2">
-      <div *ngIf="(userRole == 'GroupAdmin') || (userRole == 'SuperAdmin')">
+      <div class="row py-2">
+        <div *ngIf="(userRole == 'GroupAdmin') || (userRole == 'SuperAdmin')">
+        </div>
+        <button (click)="createGroup()" class="btn button border mt-4">Manage Groups</button>
+      </div>
     </div>
-    <button (click)="createGroup()" class="btn button border mt-4">Manage Groups</button>
-    </div>
-  </div>
 
-  <!--  Super + Group admin can create groups -->
+    <!--  Super + Group admin can create groups -->
     <div class="border mt-4 border-primary">
       <h2 class="text-center mt-2 mb-2">USER MANAGEMENT</h2>
       <table class="table table-responsive table-striped table-hover table-bordered">
@@ -81,17 +84,18 @@
             <td>{{ user.email }}</td>
             <td>{{ user.role }}</td>
             <td><button class="btn btn-primary" (click)="updateUser(user)">Edit</button></td>
-            <td *ngIf="userRole == 'SuperAdmin'"><button class="btn btn-danger" (click)="deleteUser(user)">Delete</button></td>
+            <td *ngIf="userRole == 'SuperAdmin'"><button class="btn btn-danger"
+                (click)="deleteUser(user)">Delete</button></td>
           </tr>
         </tbody>
       </table>
 
       <div class="row py-2">
-          <div *ngIf="(userRole == 'GroupAdmin') || (userRole == 'SuperAdmin')">
+        <div *ngIf="(userRole == 'GroupAdmin') || (userRole == 'SuperAdmin')">
         </div>
-          <button (click)="createUser()" class="btn button border mt-4">New User</button>
-        </div>
+        <button (click)="createUser()" class="btn button border mt-4">New User</button>
       </div>
+    </div>
 
   </div>
 </div>

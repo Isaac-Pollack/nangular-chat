@@ -46,6 +46,26 @@ And all server actions will take place over [localhost:3000](localhost:3000)
 
 Allowing the frontend to be accessed via [localhost:4200](localhost:4200)
 
+### MongoDB
+
+You will require a local MongoDB server, which can be easily setup by installing [MongoDB](https://www.mongodb.com/docs/manual/installation/) here.
+
+I would also suggest an easier way to digest this data and add/edit using a tool such as [Compass](https://www.mongodb.com/products/compass) also from MongoDB.
+
+The Compass settings/setup are as follows:
+
+- URI: mongodb://localhost:27017
+- Database Name: 3813DB
+
+The DB is designed to have 4 collections, named as follows:
+
+- users
+- groups
+- channels
+- chats
+
+To add/edit the data within these collections refer to the [Data Structures](#data-structures)
+
 ## /////////////////////////////////////////////////////////////////////////////////
 
 ## Version Control
@@ -63,18 +83,20 @@ All data will be stored as objects, written as JSON. We will follow a simple not
 | \_id | Id | MongoDB-ID value |
 | Username | String | super |
 | Email | String | super@gmail.com |
-| Password | Number | 123 |
+| Password | String | 123 |
 | Role | String | SuperAdmin |
 
-    {
-      "_id": {
-        "$oid": "6348e7606d62c67aaf7c1c1d"
-      },
-      "username": "super",
-      "email": "super@gmail.com",
-      "password": 123,
-      "role": "SuperAdmin"
-    }
+```json
+{
+  "_id": {
+    "$oid": "6348e7606d62c67aaf7c1c1d"
+  },
+  "username": "super",
+  "email": "super@gmail.com",
+  "password": "123",
+  "role": "SuperAdmin"
+}
+```
 
 ### Chat History
 
@@ -84,15 +106,17 @@ All data will be stored as objects, written as JSON. We will follow a simple not
 | Channel | String | Work Chatter |
 | Chats | String array | Isaac at 01:20 - Hi !
 
-    {
-      "_id": {
-        "$oid": "6348e7606d62c67aaf7c1c1d"
-      },
-      "channel": "Work Chatter",
-      "chats": [
-        "Isaac at 01:20 - Hi"
-      ]
-    }
+```json
+{
+  "_id": {
+    "$oid": "6348e7606d62c67aaf7c1c1d"
+  },
+  "channel": "Work Chatter",
+  "chats": [
+    "Isaac at 01:20 - Hi"
+  ]
+}
+```
 
 ### Groups
 
@@ -102,16 +126,18 @@ All data will be stored as objects, written as JSON. We will follow a simple not
 | Title | String | Work |
 | Members | String array | SuperAdmin, Isaac |
 
-    {
-      "_id": {
-        "$oid": "6348e7606d62c67aaf7c1c1d"
-      },
-      "title": "Work",
-      "members": [
-        "SuperAdmin",
-        "Isaac",
-      ]
-    }
+```json
+{
+  "_id": {
+    "$oid": "6348e7606d62c67aaf7c1c1d"
+  },
+  "title": "Work",
+  "members": [
+    "SuperAdmin",
+    "Isaac",
+  ]
+}
+```
 
 ### Channels
 
@@ -122,17 +148,19 @@ All data will be stored as objects, written as JSON. We will follow a simple not
 | GroupName | String | Work |
 | Members | String array | SuperAdmin, Isaac
 
-    {
-      "_id": {
-        "$oid": "6348e7606d62c67aaf7c1c1d"
-      },
-      "title": "Work Chatter",
-      "groupName": "Work",
-      "members": [
-        "member",
-        "super"
-      ]
-    }
+```json
+{
+  "_id": {
+    "$oid": "6348e7606d62c67aaf7c1c1d"
+  },
+  "title": "Work Chatter",
+  "groupName": "Work",
+  "members": [
+    "member",
+    "super"
+  ]
+}
+```
 
 ## Architecture
 

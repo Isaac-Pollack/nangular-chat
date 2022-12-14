@@ -4,7 +4,7 @@ module.exports = {
 			let d = new Date();
 			let h = d.getHours();
 			let m = d.getMinutes();
-			console.log(`Server has been started on port ${PORT} at ${h}:${m}`);
+			console.log(`Server has been started on port ${PORT} at ${h}:${m}\n`);
 		});
 	},
 };

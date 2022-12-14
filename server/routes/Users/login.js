@@ -1,26 +1,40 @@
-module.exports = function(app, db){
+module.exports = function (app, db) {
+	//Checks credentials and returns validity
+	app.post("/api/auth", async (req, res) => {
+		const collection = db.collection("users");
 
-  //Checks credentials and returns validity
-    app.post("/api/auth", async (req, res) => {
+		console.log("Attempting to authenticate:", req.body.username);
+		collection.findOne(
+			{ username: req.body.username },
+			{ projection: { _id: 0 } },
+			function (err, result) {
+				if (err) throw err;
+				//DEBUG: console.log(result);
 
-        var usernameSubmission = req.body.username;
-        var passwordSubmission = req.body.password;
-
-        console.log("Successfully authenticated:", usernameSubmission);
-
-        userObject = {username: usernameSubmission, password: passwordSubmission};
-
-        const collection = db.collection("users");
-
-        //1 if valid, 0 if invalid, simple !TODO increase error checking
-        collection.countDocuments((userObject), function (err, count) {
-            if (count > 0) {
-                res.send({'username': usernameSubmission, 'valid': true});
-            }
-            else {
-                res.send({'valid': false});
-            }
-        });
-    });
-
-}
+				if (result != null) {
+					if (
+						result.username === req.body.username &&
+						result.password === req.body.password
+					) {
+						//Successfull
+						res.send({ username: req.body.username, valid: true });
+						console.log("Successfully authenticated:", req.body.username);
+					} else {
+						//Unsuccessfull
+						res.send({ valid: false });
+						console.log(
+							"Unsuccessfull authentication:",
+							req.body.username + "\n",
+						);
+					}
+				} else {
+					res.send({ valid: false });
+					console.log(
+						"Unsuccessfull authentication:",
+						req.body.username + "\n",
+					);
+				}
+			},
+		);
+	});
+};
